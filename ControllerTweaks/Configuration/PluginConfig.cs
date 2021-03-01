@@ -7,7 +7,10 @@ namespace ControllerTweaks.Configuration
     internal class PluginConfig
     {
         public static PluginConfig Instance { get; set; }
-        public virtual bool ControllerSwapEnabled { get; set; } = true; // Must be 'virtual' if you want BSIPA to detect a value change and save the config automatically.
+        public virtual bool ControllerSwapEnabled { get; set; } = false;
+        public virtual bool SelectRemapEnabled { get; set; } = false;
+        public virtual bool PauseRemapEnabled { get; set; } = false;
+
 
         /// <summary>
         /// This is called whenever BSIPA reads the config from disk (including when file changes are detected).

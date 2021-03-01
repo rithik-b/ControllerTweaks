@@ -8,6 +8,7 @@ namespace ControllerTweaks.Installers
         public override void InstallBindings()
         {
             Container.BindInterfacesTo<ModifierViewController>().AsSingle();
+            Container.BindInterfacesTo<SettingsViewController>().AsSingle();
         }
     }
 }

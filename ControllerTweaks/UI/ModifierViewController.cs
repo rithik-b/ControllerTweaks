@@ -4,6 +4,7 @@ using BeatSaberMarkupLanguage.GameplaySetup;
 using ControllerTweaks.Configuration;
 using IPA.Utilities;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
@@ -16,31 +17,16 @@ namespace ControllerTweaks.UI
         private int clicksToChange = 5;
         private string _imagesrc;
 
-        [UIComponent("swap-checkbox")]
-        private ToggleSetting swapCheckbox;
-
-        [UIValue("imagesrc")]
-        private string imagesrc
-        {
-            get => _imagesrc;
-            set
-            {
-                _imagesrc = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(imagesrc)));
-            }
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void Initialize()
         {
             GameplaySetup.instance.AddTab("Controller Tweaks", "ControllerTweaks.UI.ModifierView.bsml", this);
-            imagesrc = "ControllerTweaks.Images.ElectroCute.png";
+            ImageSrc = "ControllerTweaks.Images.ElectroMint_uncropped.png";
         }
 
         public void Dispose()
         {
-            swapCheckbox.ReceiveValue();
             GameplaySetup.instance.RemoveTab("Controller Tweaks");
         }
 
@@ -51,24 +37,32 @@ namespace ControllerTweaks.UI
             if (clicksToChange == 0)
             {
                 clicksToChange = 5;
-                if (imagesrc == "ControllerTweaks.Images.ElectroCute.png")
+                if (ImageSrc == "ControllerTweaks.Images.ElectroMint_uncropped.png")
                 {
-                    imagesrc = "ControllerTweaks.Images.ElectroMint_uncropped.png";
+                    ImageSrc = "ControllerTweaks.Images.ElectroCute.png";
                 }
                 else
                 {
-                    imagesrc = "ControllerTweaks.Images.ElectroCute.png";
+                    ImageSrc = "ControllerTweaks.Images.ElectroMint_uncropped.png";
                 }
             }
         }
 
         [UIValue("controller-swap-enabled")]
-        private bool ControllerTweaksEnabled
+        private bool ControllerSwapEnabled
         {
-            get { return PluginConfig.Instance.ControllerSwapEnabled; }
+            get => PluginConfig.Instance.ControllerSwapEnabled;
+            set => PluginConfig.Instance.ControllerSwapEnabled = value;
+        }
+
+        [UIValue("imagesrc")]
+        private string ImageSrc
+        {
+            get => _imagesrc;
             set
             {
-                PluginConfig.Instance.ControllerSwapEnabled = value;
+                _imagesrc = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ImageSrc)));
             }
         }
     }
