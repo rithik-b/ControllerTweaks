@@ -50,6 +50,11 @@
       <HintPath>$(BeatSaberDir)\Plugins\BSML.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="GameplayCore, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\GameplayCore.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="Oculus.VR, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <Private>False</Private>
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Oculus.VR.dll</HintPath>
@@ -133,6 +138,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControllerSwapper.cs" />
+    <Compile Include="HarmonyPatches\MultiplayerLocalActivePlayerGameplayManager_Start.cs" />
+    <Compile Include="HarmonyPatches\SaberTypeExtensions_Node.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Installers\ControllerTweaksGameInstaller.cs" />
     <Compile Include="Installers\ControllerTweaksMenuInstaller.cs" />

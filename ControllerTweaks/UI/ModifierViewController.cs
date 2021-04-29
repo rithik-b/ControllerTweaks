@@ -1,13 +1,8 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
-using BeatSaberMarkupLanguage.Components.Settings;
 using BeatSaberMarkupLanguage.GameplaySetup;
 using ControllerTweaks.Configuration;
-using IPA.Utilities;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using UnityEngine;
 using Zenject;
 
 namespace ControllerTweaks.UI
@@ -27,7 +22,7 @@ namespace ControllerTweaks.UI
 
         public void Dispose()
         {
-            GameplaySetup.instance.RemoveTab("Controller Tweaks");
+            GameplaySetup.instance?.RemoveTab("Controller Tweaks");
         }
 
         [UIAction("image-click")]

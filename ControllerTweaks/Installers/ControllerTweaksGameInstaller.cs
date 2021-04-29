@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ControllerTweaks.Configuration;
 using Zenject;
 
 namespace ControllerTweaks.Installers
@@ -11,7 +7,10 @@ namespace ControllerTweaks.Installers
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesTo<ControllerSwapper>().AsSingle();
+            if (PluginConfig.Instance.ControllerSwapEnabled)
+            {
+                Container.BindInterfacesTo<ControllerSwapper>().AsSingle();
+            }
         }
     }
 }

@@ -4,12 +4,7 @@ using IPA.Config;
 using IPA.Config.Stores;
 using SiraUtil.Zenject;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
-using UnityEngine;
 using IPALogger = IPA.Logging.Logger;
 
 namespace ControllerTweaks
@@ -17,10 +12,8 @@ namespace ControllerTweaks
     [Plugin(RuntimeOptions.DynamicInit)]
     public class Plugin
     {
-        // TODO: If using Harmony, uncomment and change YourGitHub to the name of your GitHub account, or use the form "com.company.project.product"
-        //       You must also add a reference to the Harmony assembly in the Libs folder.
-        // public const string HarmonyId = "com.github.YourGitHub.ControllerTweaks";
-        // internal static readonly HarmonyLib.Harmony harmony = new HarmonyLib.Harmony(HarmonyId);
+        public const string HarmonyId = "com.github.rithik-b.ControllerTweaks";
+        internal static readonly HarmonyLib.Harmony harmony = new HarmonyLib.Harmony(HarmonyId);
 
         internal static Plugin Instance { get; private set; }
         internal static IPALogger Log { get; private set; }
@@ -58,7 +51,7 @@ namespace ControllerTweaks
         [OnEnable]
         public void OnEnable()
         {
-            //ApplyHarmonyPatches();
+            ApplyHarmonyPatches();
         }
 
         /// <summary>
@@ -69,7 +62,7 @@ namespace ControllerTweaks
         [OnDisable]
         public void OnDisable()
         {
-            //RemoveHarmonyPatches();
+            RemoveHarmonyPatches();
         }
 
         /*
@@ -88,7 +81,6 @@ namespace ControllerTweaks
 
         // Uncomment the methods in this section if using Harmony
         #region Harmony
-        /*
         /// <summary>
         /// Attempts to apply all the Harmony patches in this assembly.
         /// </summary>
@@ -122,7 +114,6 @@ namespace ControllerTweaks
                 Plugin.Log?.Debug(ex);
             }
         }
-        */
         #endregion
     }
 }
