@@ -19,21 +19,40 @@
 			</horizontal>
 		</vertical>
 	</tab>
-	<tab tags='TweaksTab' tab-name='Select Button'>
+	<tab tags='TweaksTab' tab-name='Left Select Button'>
 		<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
-			<checkbox-setting text='Remap Select Button' value='select-remap-enabled' apply-on-change='true' />
-			<horizontal active='~select-remap-enabled' >
+			<checkbox-setting text='Remap Left Controller Select Button' value='left-remap-enabled' apply-on-change='true' />
+			<horizontal active='~left-remap-enabled'>
 				<vertical>
-					<dropdown-list-setting text='' options='button-options' ignore-layout='true' anchor-pos-x='20' />
+					<dropdown-list-setting text='' on-change='left-to-add-changed' options='button-options' ignore-layout='true' anchor-pos-x='20' />
 					<horizontal>
-						<button text='+' on-click='add-select-clicked' />
-						<button text='-' on-click='remove-select-clicked' />
+						<button text='+' interactable='~add-left-interactable' on-click='add-left-clicked' />
+						<button text='-' interactable='~remove-left-interactable' on-click='remove-left-clicked' />
 					</horizontal>
 				</vertical>
 				<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
-					<page-button event-click='select-button-list#PageUp' direction='Up'></page-button>
-					<list id='select-button-list' pref-height='20' select-cell='select-cell' list-style='List'></list>
-					<page-button event-click='select-button-list#PageDown' direction='Down'></page-button>
+					<page-button event-click='left-button-list#PageUp' direction='Up'></page-button>
+					<list id='left-button-list' pref-height='20' select-cell='select-left-list' list-style='List'></list>
+					<page-button event-click='left-button-list#PageDown' direction='Down'></page-button>
+				</vertical>
+			</horizontal>
+		</vertical>
+	</tab>
+	<tab tags='TweaksTab' tab-name='Right Select Button'>
+		<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
+			<checkbox-setting text='Remap Right Controller Select Button' value='right-remap-enabled' apply-on-change='true' />
+			<horizontal active='~right-remap-enabled'>
+				<vertical>
+					<dropdown-list-setting text='' on-change='right-to-add-changed' options='button-options' ignore-layout='true' anchor-pos-x='20' />
+					<horizontal>
+						<button text='+' interactable='~add-right-interactable' on-click='add-right-clicked' />
+						<button text='-' interactable='~remove-right-interactable' on-click='remove-right-clicked' />
+					</horizontal>
+				</vertical>
+				<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
+					<page-button event-click='right-button-list#PageUp' direction='Up'></page-button>
+					<list id='right-button-list' pref-height='20' select-cell='select-right-list' list-style='List'></list>
+					<page-button event-click='right-button-list#PageDown' direction='Down'></page-button>
 				</vertical>
 			</horizontal>
 		</vertical>

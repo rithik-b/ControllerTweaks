@@ -10,7 +10,7 @@ using Zenject;
 
 namespace ControllerTweaks.UI
 {
-    class SettingsViewController : IInitializable, IDisposable, INotifyPropertyChanged
+    public partial class SettingsViewController : IInitializable, IDisposable, INotifyPropertyChanged
     {
         [UIValue("button-options")]
         private readonly List<object> buttonOptions = new List<object>{
@@ -27,13 +27,6 @@ namespace ControllerTweaks.UI
             "Y"
         };
 
-        int selectedPauseTableIndex = -1;
-
-        private string pauseToAdd = "Start";
-
-        [UIComponent("pause-button-list")]
-        public CustomListTableData pauseButtonList;
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void Initialize() => BSMLSettings.instance.AddSettingsMenu("Controller Tweaks", "ControllerTweaks.UI.SettingsView.bsml", this);
@@ -49,50 +42,6 @@ namespace ControllerTweaks.UI
             pauseButtonList.tableView.ReloadData();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AddPauseInteractable)));
         }
-
-        [UIAction("add-pause-clicked")]
-        private void AddPauseClicked()
-        {
-            pauseButtonList.data.Add(new CustomListTableData.CustomCellInfo(pauseToAdd));
-            PluginConfig.Instance.PauseButtons.Add(InputManager.NameToButton[pauseToAdd]);
-            pauseButtonList.tableView.ReloadData();
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AddPauseInteractable)));
-        }
-
-        [UIAction("remove-pause-clicked")]
-        private void RemovePauseClicked()
-        {
-            if (selectedPauseTableIndex != -1)
-            {
-                pauseButtonList.tableView.ClearSelection();
-                pauseButtonList.data.RemoveAt(selectedPauseTableIndex);
-                PluginConfig.Instance.PauseButtons.RemoveAt(selectedPauseTableIndex);
-                pauseButtonList.tableView.ReloadData();
-                selectedPauseTableIndex = -1;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AddPauseInteractable)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RemovePauseInteractable)));
-            }
-        }
-
-        [UIAction("select-pause-list")]
-        private void Select(TableView _, int selectedPauseTableIndex)
-        {
-            this.selectedPauseTableIndex = selectedPauseTableIndex;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RemovePauseInteractable)));
-        }
-
-        [UIAction("pause-to-add-changed")]
-        private void PauseToAddChanged(string selectedPause)
-        {
-            this.pauseToAdd = selectedPause;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AddPauseInteractable)));
-        }
-
-        [UIValue("add-pause-interactable")]
-        private bool AddPauseInteractable => pauseButtonList == null ? true : !pauseButtonList.data.Exists(data => data.text == pauseToAdd);
-
-        [UIValue("remove-pause-interactable")]
-        private bool RemovePauseInteractable => selectedPauseTableIndex != -1;
 
         [UIAction("#apply")]
         public void OnApply()
@@ -116,22 +65,11 @@ namespace ControllerTweaks.UI
         [UIValue("select-remap-enabled")]
         private bool SelectRemapEnabled
         {
-            get => PluginConfig.Instance.SelectRemapEnabled;
+            get => PluginConfig.Instance.LeftSelectRemapEnabled;
             set
             {
-                PluginConfig.Instance.SelectRemapEnabled = value;
+                PluginConfig.Instance.LeftSelectRemapEnabled = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectRemapEnabled)));
-            }
-        }
-
-        [UIValue("pause-remap-enabled")]
-        private bool PauseRemapEnabled
-        {
-            get => PluginConfig.Instance.PauseRemapEnabled;
-            set
-            {
-                PluginConfig.Instance.PauseRemapEnabled = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PauseRemapEnabled)));
             }
         }
     }

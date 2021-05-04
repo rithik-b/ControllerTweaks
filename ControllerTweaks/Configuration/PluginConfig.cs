@@ -14,13 +14,18 @@ namespace ControllerTweaks.Configuration
 
         [UseConverter(typeof(ListConverter<OVRInput.Button>))]
         [NonNullable]
-        public virtual List<OVRInput.Button> SelectButtons { get; set; } = new List<OVRInput.Button>();
-        public virtual bool SelectRemapEnabled { get; set; } = false;
+        public virtual List<OVRInput.Button> PauseButtons { get; set; } = new List<OVRInput.Button>();
+        public virtual bool PauseRemapEnabled { get; set; } = false;
 
         [UseConverter(typeof(ListConverter<OVRInput.Button>))]
         [NonNullable]
-        public virtual List<OVRInput.Button> PauseButtons { get; set; } = new List<OVRInput.Button>();
-        public virtual bool PauseRemapEnabled { get; set; } = false;
+        public virtual List<OVRInput.Button> LeftSelectButtons { get; set; } = new List<OVRInput.Button>();
+        public virtual bool LeftSelectRemapEnabled { get; set; } = false;
+
+        [UseConverter(typeof(ListConverter<OVRInput.Button>))]
+        [NonNullable]
+        public virtual List<OVRInput.Button> RightSelectButtons { get; set; } = new List<OVRInput.Button>();
+        public virtual bool RightSelectRemapEnabled { get; set; } = false;
 
         /// <summary>
         /// This is called whenever BSIPA reads the config from disk (including when file changes are detected).

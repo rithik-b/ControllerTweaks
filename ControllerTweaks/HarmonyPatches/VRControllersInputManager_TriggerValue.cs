@@ -1,11 +1,9 @@
-﻿/*
+﻿using ControllerTweaks.Configuration;
 using HarmonyLib;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection.Emit;
 
 namespace ControllerTweaks.HarmonyPatches
 {
@@ -13,43 +11,77 @@ namespace ControllerTweaks.HarmonyPatches
     [HarmonyPatch("TriggerValue", MethodType.Normal)]
     public class VRControllersInputManager_TriggerValue
     {
-        internal static readonly MethodInfo getCustomInput = SymbolExtensions.GetMethodInfo((() => GetCustomInput()));
+        internal static readonly MethodInfo getLeftInput = SymbolExtensions.GetMethodInfo((() => GetLeftInput()));
+        internal static readonly MethodInfo getRightInput = SymbolExtensions.GetMethodInfo((() => GetRightInput()));
         internal static bool failedPatch = false;
         internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
-            int index = -1;
+            int firstIndex = -1;
+            int secondIndex = -1;
+
             for (int i = 0; i < codes.Count - 1; i++)
             {
-                if (codes[i].opcode == OpCodes.Ldstr && codes[i].operand.ToString() == "MenuButtonOculusTouch" && codes[i + 1].opcode == OpCodes.Call)
+                if (codes[i].opcode == OpCodes.Ldstr && codes[i + 1].opcode == OpCodes.Call)
                 {
-                    index = i;
-                    break;
+                     if (codes[i].operand?.ToString() == "TriggerLeftHand")
+                    {
+                        firstIndex = i;
+                    }
+                    else if(codes[i].operand?.ToString() == "TriggerRightHand")
+                    {
+                        secondIndex = i;
+                    }
                 }
             }
-            if (index != -1 && PluginConfig.Instance.PauseRemapEnabled)
+
+            if (firstIndex != -1 && PluginConfig.Instance.LeftSelectRemapEnabled)
             {
-                codes.RemoveAt(index);
-                codes.RemoveAt(index);
-                CodeInstruction newInstruction = new CodeInstruction(OpCodes.Call, getCustomInput);
-                codes.Insert(index, newInstruction);
+                codes.RemoveAt(firstIndex);
+                codes.RemoveAt(firstIndex);
+                CodeInstruction newInstruction = new CodeInstruction(OpCodes.Call, getLeftInput);
+                codes.Insert(firstIndex, newInstruction);
             }
-            else if (index == -1)
+
+            if (secondIndex != -1 && PluginConfig.Instance.RightSelectRemapEnabled)
+            {
+                codes.RemoveAt(secondIndex);
+                codes.RemoveAt(secondIndex);
+                CodeInstruction newInstruction = new CodeInstruction(OpCodes.Call, getRightInput);
+                codes.Insert(secondIndex, newInstruction);
+            }
+
+            if (firstIndex == -1 || secondIndex == -1)
             {
                 failedPatch = true;
             }
+
+            for (int i = 0; i < codes.Count - 2; i++)
+            {
+                Plugin.Log.Critical(codes[i].opcode.ToString());
+            }
+
             return codes.AsEnumerable();
         }
 
-        internal static bool GetCustomInput()
+        internal static float GetLeftInput()
         {
             bool pressed = false;
-            foreach (var button in PluginConfig.Instance.PauseButtons)
+            foreach (var button in PluginConfig.Instance.LeftSelectButtons)
             {
                 pressed = pressed || OVRInput.Get(button, OVRInput.Controller.Touch);
             }
-            return pressed;
+            return pressed ? 1 : 0;
+        }
+
+        internal static float GetRightInput()
+        {
+            bool pressed = false;
+            foreach (var button in PluginConfig.Instance.RightSelectButtons)
+            {
+                pressed = pressed || OVRInput.Get(button, OVRInput.Controller.Touch);
+            }
+            return pressed ? 1 : 0;
         }
     }
 }
-*/

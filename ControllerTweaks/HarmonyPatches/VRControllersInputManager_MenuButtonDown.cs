@@ -19,7 +19,7 @@ namespace ControllerTweaks.HarmonyPatches
             int index = -1;
             for (int i = 0; i < codes.Count - 1; i++)
             {
-                if (codes[i].opcode == OpCodes.Ldstr && codes[i].operand.ToString() == "MenuButtonOculusTouch" && codes[i+1].opcode == OpCodes.Call)
+                if (codes[i].opcode == OpCodes.Ldstr && codes[i].operand?.ToString() == "MenuButtonOculusTouch" && codes[i+1].opcode == OpCodes.Call)
                 {
                     index = i;
                     break;
