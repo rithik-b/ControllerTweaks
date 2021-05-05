@@ -2,6 +2,7 @@
 	<tab-selector tab-tag='TweaksTab' anchor-pos-y='-1' />
 	<tab tags='TweaksTab' tab-name='Pause Button'>
 		<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
+			<text text='~warning-text' color='red' />
 			<checkbox-setting text='Remap Pause Button' value='pause-remap-enabled' apply-on-change='true' />
 			<horizontal active='~pause-remap-enabled'>
 				<vertical>
@@ -21,6 +22,7 @@
 	</tab>
 	<tab tags='TweaksTab' tab-name='Left Select Button'>
 		<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
+			<text text='~warning-text' color='red' />
 			<checkbox-setting text='Remap Left Controller Select Button' value='left-remap-enabled' apply-on-change='true' />
 			<horizontal active='~left-remap-enabled'>
 				<vertical>
@@ -40,6 +42,7 @@
 	</tab>
 	<tab tags='TweaksTab' tab-name='Right Select Button'>
 		<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
+			<text text='~warning-text' color='red' />
 			<checkbox-setting text='Remap Right Controller Select Button' value='right-remap-enabled' apply-on-change='true' />
 			<horizontal active='~right-remap-enabled'>
 				<vertical>

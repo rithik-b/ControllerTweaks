@@ -1,4 +1,5 @@
-﻿using ControllerTweaks.Installers;
+﻿using ControllerTweaks.HarmonyPatches;
+using ControllerTweaks.Installers;
 using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
@@ -51,7 +52,10 @@ namespace ControllerTweaks
         [OnEnable]
         public void OnEnable()
         {
-            ApplyHarmonyPatches();
+            if (VRControllersInputManager_TriggerValue.vrPlatformHelper != null)
+            {
+                ApplyHarmonyPatches();
+            }
         }
 
         /// <summary>

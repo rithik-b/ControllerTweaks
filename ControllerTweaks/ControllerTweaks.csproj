@@ -152,6 +152,7 @@
     <Compile Include="UI\SettingsViewController.cs" />
     <Compile Include="UI\SettingsViewController.LeftSelectButton.cs" />
     <Compile Include="UI\SettingsViewController.PauseButton.cs" />
+    <Compile Include="UI\SettingsViewController.RightSelectButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />

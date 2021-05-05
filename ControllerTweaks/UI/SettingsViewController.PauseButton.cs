@@ -2,12 +2,7 @@
 using BeatSaberMarkupLanguage.Components;
 using ControllerTweaks.Configuration;
 using HMUI;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ControllerTweaks.UI
 {
@@ -46,16 +41,16 @@ namespace ControllerTweaks.UI
         }
 
         [UIAction("select-pause-list")]
-        private void Select(TableView _, int selectedPauseTableIndex)
+        private void SelectPause(TableView _, int selectedPauseTableIndex)
         {
             this.selectedPauseTableIndex = selectedPauseTableIndex;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RemovePauseInteractable)));
         }
 
         [UIAction("pause-to-add-changed")]
-        private void PauseToAddChanged(string selectedPause)
+        private void PauseToAddChanged(string pauseToAdd)
         {
-            this.pauseToAdd = selectedPause;
+            this.pauseToAdd = pauseToAdd;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AddPauseInteractable)));
         }
 
