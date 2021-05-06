@@ -1,6 +1,7 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.GameplaySetup;
 using ControllerTweaks.Configuration;
+using ControllerTweaks.HarmonyPatches;
 using System;
 using System.ComponentModel;
 using Zenject;
@@ -16,7 +17,7 @@ namespace ControllerTweaks.UI
 
         public void Initialize()
         {
-            GameplaySetup.instance.AddTab("Controller Tweaks", "ControllerTweaks.UI.ModifierView.bsml", this);
+            GameplaySetup.instance.AddTab("Controller Tweaks", "ControllerTweaks.UI.Views.ModifierView.bsml", this);
             ImageSrc = "ControllerTweaks.Images.ElectroMint_uncropped.png";
         }
 
@@ -47,7 +48,11 @@ namespace ControllerTweaks.UI
         private bool ControllerSwapEnabled
         {
             get => PluginConfig.Instance.ControllerSwapEnabled;
-            set => PluginConfig.Instance.ControllerSwapEnabled = value;
+            set
+            {
+                PluginConfig.Instance.ControllerSwapEnabled = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ControllerSwapEnabled)));
+            }
         }
 
         [UIValue("imagesrc")]

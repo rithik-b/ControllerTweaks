@@ -11,6 +11,10 @@ namespace ControllerTweaks.HarmonyPatches
     [HarmonyPatch("TriggerValue", MethodType.Normal)]
     public class VRControllersInputManager_TriggerValue
     {
+        private static readonly MethodInfo transpilerMethodInfo = SymbolExtensions.GetMethodInfo((IEnumerable<CodeInstruction> instructions) => Transpiler(instructions));
+        internal static readonly MethodBase baseMethodInfo = typeof(VRControllersInputManager).GetMethod("TriggerValue");
+        internal static readonly HarmonyMethod transpilerMethod = new HarmonyMethod(transpilerMethodInfo);
+
         internal static readonly MethodInfo getLeftInput = SymbolExtensions.GetMethodInfo(() => GetLeftInput());
         internal static readonly MethodInfo getRightInput = SymbolExtensions.GetMethodInfo(() => GetRightInput());
         internal static bool failedPatch = false;

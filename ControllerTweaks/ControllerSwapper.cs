@@ -1,8 +1,6 @@
 ﻿using ControllerTweaks.HarmonyPatches;
 using IPA.Utilities;
 using System;
-using System.Linq;
-using UnityEngine;
 using Zenject;
 
 namespace ControllerTweaks
@@ -32,11 +30,14 @@ namespace ControllerTweaks
                 leftController.node = UnityEngine.XR.XRNode.RightHand;
                 rightController.node = UnityEngine.XR.XRNode.LeftHand;
             }
+            Plugin.harmony.Unpatch(SaberTypeExtensions_Node.baseMethodInfo, HarmonyLib.HarmonyPatchType.Postfix, Plugin.HarmonyId);
+            Plugin.harmony.Patch(SaberTypeExtensions_Node.baseMethodInfo, postfix: SaberTypeExtensions_Node.postfixMethod);
         }
 
         public void Dispose()
         {
             MultiplayerLocalActivePlayerGameplayManager_Start.MultiplayerLocalActivePlayerGameplayManagerHasStarted -= MultiplayerLocalActivePlayerGameplayManagerHasStarted;
+            Plugin.harmony.Unpatch(SaberTypeExtensions_Node.baseMethodInfo, HarmonyLib.HarmonyPatchType.Postfix, Plugin.HarmonyId);
         }
 
         private void MultiplayerLocalActivePlayerGameplayManagerHasStarted(MultiplayerLocalActivePlayerGameplayManager multiplayerLocalActivePlayerGameplayManager)

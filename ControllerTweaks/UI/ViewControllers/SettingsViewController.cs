@@ -35,10 +35,9 @@ namespace ControllerTweaks.UI
         {
             this.vrPlatformHelper = vrPlatformHelper;
             VRControllersInputManager_TriggerValue.vrPlatformHelper = vrPlatformHelper;
-            Plugin.ApplyHarmonyPatches();
         }
 
-        public void Initialize() => BSMLSettings.instance.AddSettingsMenu("Controller Tweaks", "ControllerTweaks.UI.SettingsView.bsml", this);
+        public void Initialize() => BSMLSettings.instance.AddSettingsMenu("Controller Tweaks", "ControllerTweaks.UI.Views.SettingsView.bsml", this);
         public void Dispose() => BSMLSettings.instance?.RemoveSettingsMenu(this);
 
         [UIAction("#post-parse")]
@@ -55,8 +54,23 @@ namespace ControllerTweaks.UI
         [UIAction("#apply")]
         public void OnApply()
         {
-            Plugin.RemoveHarmonyPatches();
-            Plugin.ApplyHarmonyPatches();
+            if (PauseRemapEnabled)
+            {
+                Plugin.harmony.Patch(VRControllersInputManager_MenuButtonDown.baseMethodInfo, transpiler: VRControllersInputManager_MenuButtonDown.transpilerMethod);
+            }
+            else
+            {
+                Plugin.harmony.Unpatch(VRControllersInputManager_MenuButtonDown.baseMethodInfo, HarmonyLib.HarmonyPatchType.Transpiler, Plugin.HarmonyId);
+            }
+
+            if (LeftRemapEnabled || RightRemapEnabled)
+            {
+                Plugin.harmony.Patch(VRControllersInputManager_TriggerValue.baseMethodInfo, transpiler: VRControllersInputManager_TriggerValue.transpilerMethod);
+            }
+            else
+            {
+                Plugin.harmony.Unpatch(VRControllersInputManager_TriggerValue.baseMethodInfo, HarmonyLib.HarmonyPatchType.Transpiler, Plugin.HarmonyId);
+            }
         }
 
         [UIValue("warning-text")]
@@ -66,7 +80,7 @@ namespace ControllerTweaks.UI
             {
                 if (vrPlatformHelper.vrPlatformSDK != VRPlatformSDK.Oculus)
                 {
-                    return "Remap only works for Oculus VR.\nIf using SteamVR, use SteamVR's built in button remapper.";
+                    return "Remap only works for Oculus VR.\nFor SteamVR, use SteamVR's built in button remapper.";
                 }
                 else if (VRControllersInputManager_MenuButtonDown.failedPatch || VRControllersInputManager_TriggerValue.failedPatch)
                 {

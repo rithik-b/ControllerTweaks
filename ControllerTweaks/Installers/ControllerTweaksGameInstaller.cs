@@ -1,4 +1,5 @@
 ﻿using ControllerTweaks.Configuration;
+using ControllerTweaks.UI;
 using Zenject;
 
 namespace ControllerTweaks.Installers
@@ -11,6 +12,7 @@ namespace ControllerTweaks.Installers
             {
                 Container.BindInterfacesTo<ControllerSwapper>().AsSingle();
             }
+            Container.BindInterfacesTo<ControllersOffsetPauseViewController>().AsSingle();
         }
     }
 }

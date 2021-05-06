@@ -27,6 +27,11 @@ namespace ControllerTweaks.Configuration
         public virtual List<OVRInput.Button> RightSelectButtons { get; set; } = new List<OVRInput.Button>();
         public virtual bool RightSelectRemapEnabled { get; set; } = false;
 
+        [UseConverter(typeof(DictionaryConverter<OffsetPreset>))]
+        [NonNullable]
+        public virtual Dictionary<string, OffsetPreset> OffsetPresets { get; set; } = new Dictionary<string, OffsetPreset>();
+        public virtual int SelectedPreset { get; set; } = 0;
+
         /// <summary>
         /// This is called whenever BSIPA reads the config from disk (including when file changes are detected).
         /// </summary>

@@ -11,7 +11,11 @@ namespace ControllerTweaks.HarmonyPatches
     [HarmonyPatch("MenuButtonDown", MethodType.Normal)]
     public class VRControllersInputManager_MenuButtonDown
     {
-        internal static readonly MethodInfo getCustomInput = SymbolExtensions.GetMethodInfo((() => GetCustomInput()));
+        private static readonly MethodInfo transpilerMethodInfo = SymbolExtensions.GetMethodInfo((IEnumerable<CodeInstruction> instructions) => Transpiler(instructions));
+        internal static readonly MethodInfo baseMethodInfo = SymbolExtensions.GetMethodInfo((VRControllersInputManager vrControllersInputManager) => vrControllersInputManager.MenuButtonDown());
+        internal static readonly HarmonyMethod transpilerMethod = new HarmonyMethod(transpilerMethodInfo);
+
+        internal static readonly MethodInfo getCustomInput = SymbolExtensions.GetMethodInfo(() => GetCustomInput());
         internal static bool failedPatch = false;
         internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {

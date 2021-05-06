@@ -52,10 +52,7 @@ namespace ControllerTweaks
         [OnEnable]
         public void OnEnable()
         {
-            if (VRControllersInputManager_TriggerValue.vrPlatformHelper != null)
-            {
-                ApplyHarmonyPatches();
-            }
+            harmony.Patch(MultiplayerLocalActivePlayerGameplayManager_Start.baseMethodInfo, prefix: MultiplayerLocalActivePlayerGameplayManager_Start.prefixMethod);
         }
 
         /// <summary>
