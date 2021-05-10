@@ -10,7 +10,7 @@ using Zenject;
 
 namespace ControllerTweaks.UI
 {
-    public class ControllersOffsetPauseViewController : IInitializable, INotifyPropertyChanged
+    public class ControllerOffsetPauseViewController : IInitializable, INotifyPropertyChanged
     {
         private readonly PauseMenuManager pauseMenuManager;
         private VRControllersValueSOOffsets vrControllerTransformOffset;
@@ -27,7 +27,7 @@ namespace ControllerTweaks.UI
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ControllersOffsetPauseViewController(PauseMenuManager pauseMenuManager, SaberManager saberManager)
+        public ControllerOffsetPauseViewController(PauseMenuManager pauseMenuManager, SaberManager saberManager)
         {
             this.pauseMenuManager = pauseMenuManager;
             leftController = saberManager?.leftSaber.GetComponentInParent<VRController>();

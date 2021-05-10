@@ -12,13 +12,14 @@ namespace ControllerTweaks.HarmonyPatches
     public class VRControllersInputManager_MenuButtonDown
     {
         private static readonly MethodInfo transpilerMethodInfo = SymbolExtensions.GetMethodInfo((IEnumerable<CodeInstruction> instructions) => Transpiler(instructions));
-        internal static readonly MethodInfo baseMethodInfo = SymbolExtensions.GetMethodInfo((VRControllersInputManager vrControllersInputManager) => vrControllersInputManager.MenuButtonDown());
+        internal static readonly MethodInfo baseMethodInfo = typeof(SaberTypeExtensions).GetMethod("Node");
         internal static readonly HarmonyMethod transpilerMethod = new HarmonyMethod(transpilerMethodInfo);
 
         internal static readonly MethodInfo getCustomInput = SymbolExtensions.GetMethodInfo(() => GetCustomInput());
         internal static bool failedPatch = false;
         internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
+            failedPatch = false;
             List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
             int index = -1;
             for (int i = 0; i < codes.Count - 1; i++)

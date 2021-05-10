@@ -138,25 +138,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\OffsetPreset.cs" />
-    <Compile Include="ControllerOffsetManager.cs" />
     <Compile Include="ControllerSwapper.cs" />
-    <Compile Include="HarmonyPatches\HapticFeedbackController_PlayHapticFeedback.cs" />
+    <Compile Include="HarmonyPatches\ObstacleSaberSparkleEffectManager_Update.cs" />
     <Compile Include="HarmonyPatches\MultiplayerLocalActivePlayerGameplayManager_Start.cs" />
     <Compile Include="HarmonyPatches\SaberTypeExtensions_Node.cs" />
     <Compile Include="HarmonyPatches\VRControllersInputManager_MenuButtonDown.cs" />
     <Compile Include="HarmonyPatches\VRControllersInputManager_TriggerValue.cs" />
-    <Compile Include="InputManager.cs" />
+    <Compile Include="Installers\ControllerTweaksApplicationInstaller.cs" />
+    <Compile Include="Managers\ControllerTweaksInputManager.cs" />
     <Compile Include="Installers\ControllerTweaksGameInstaller.cs" />
     <Compile Include="Installers\ControllerTweaksMenuInstaller.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\ViewControllers\ControllersOffsetPauseViewController.cs" />
+    <Compile Include="UI\ViewControllers\ControllerOffsetPauseViewController.cs" />
+    <Compile Include="Interfaces\ISettingsSubViewController.cs" />
+    <Compile Include="UI\ViewControllers\LeftSelectRemapViewController.cs" />
     <Compile Include="UI\ViewControllers\ModifierViewController.cs" />
+    <Compile Include="UI\ViewControllers\PauseRemapViewController.cs" />
+    <Compile Include="UI\ViewControllers\RemapViewController.cs" />
+    <Compile Include="UI\ViewControllers\RightSelectRemapViewController.cs" />
     <Compile Include="UI\ViewControllers\SettingsViewController.cs" />
-    <Compile Include="UI\ViewControllers\SettingsViewController.LeftSelectButton.cs" />
-    <Compile Include="UI\ViewControllers\SettingsViewController.PauseButton.cs" />
-    <Compile Include="UI\ViewControllers\SettingsViewController.RightSelectButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
@@ -168,6 +170,7 @@
     <EmbeddedResource Include="UI\Views\ModifierView.bsml" />
     <EmbeddedResource Include="UI\Views\SettingsView.bsml" />
     <EmbeddedResource Include="UI\Views\ControllerOffsetPauseView.bsml" />
+    <EmbeddedResource Include="UI\Views\RemapView.bsml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">

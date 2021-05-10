@@ -1,0 +1,20 @@
+﻿<bg id='root-transform' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+	<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
+		<text text='~warning-text' color='red' />
+		<checkbox-setting text='Enable Remap' value='remap-enabled' apply-on-change='true' />
+		<horizontal active='~remap-enabled'>
+			<vertical>
+				<dropdown-list-setting text='' on-change='button-to-add-changed' options='button-options' ignore-layout='true' anchor-pos-x='20' />
+				<horizontal>
+					<button text='+' interactable='~add-button-interactable' on-click='add-button-clicked' />
+					<button text='-' interactable='~remove-button-interactable' on-click='remove-button-clicked' />
+				</horizontal>
+			</vertical>
+			<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
+				<page-button event-click='button-list#PageUp' direction='Up'></page-button>
+				<list id='button-list' pref-height='20' select-cell='select-button-list' list-style='List'></list>
+				<page-button event-click='button-list#PageDown' direction='Down'></page-button>
+			</vertical>
+		</horizontal>
+	</vertical>
+</bg>

@@ -1,11 +1,12 @@
 ﻿using ControllerTweaks.HarmonyPatches;
 using IPA.Utilities;
 using System;
+using System.Linq;
 using Zenject;
 
 namespace ControllerTweaks
 {
-    class ControllerSwapper : IInitializable, IDisposable
+    public class ControllerSwapper : IInitializable, IDisposable
     {
         private VRController leftController;
         private VRController rightController;
@@ -30,14 +31,20 @@ namespace ControllerTweaks
                 leftController.node = UnityEngine.XR.XRNode.RightHand;
                 rightController.node = UnityEngine.XR.XRNode.LeftHand;
             }
-            Plugin.harmony.Unpatch(SaberTypeExtensions_Node.baseMethodInfo, HarmonyLib.HarmonyPatchType.Postfix, Plugin.HarmonyId);
-            Plugin.harmony.Patch(SaberTypeExtensions_Node.baseMethodInfo, postfix: SaberTypeExtensions_Node.postfixMethod);
+
+            if (!Plugin.harmony.GetPatchedMethods().Contains(SaberTypeExtensions_Node.baseMethodInfo))
+            {
+                Plugin.harmony.Patch(SaberTypeExtensions_Node.baseMethodInfo, prefix: SaberTypeExtensions_Node.prefixMethod);
+            }
+            if (!Plugin.harmony.GetPatchedMethods().Contains(ObstacleSaberSparkleEffectManager_Update.baseMethodInfo))
+            {
+                Plugin.harmony.Patch(ObstacleSaberSparkleEffectManager_Update.baseMethodInfo, transpiler: ObstacleSaberSparkleEffectManager_Update.transpilerMethod);
+            }
         }
 
         public void Dispose()
         {
             MultiplayerLocalActivePlayerGameplayManager_Start.MultiplayerLocalActivePlayerGameplayManagerHasStarted -= MultiplayerLocalActivePlayerGameplayManagerHasStarted;
-            Plugin.harmony.Unpatch(SaberTypeExtensions_Node.baseMethodInfo, HarmonyLib.HarmonyPatchType.Postfix, Plugin.HarmonyId);
         }
 
         private void MultiplayerLocalActivePlayerGameplayManagerHasStarted(MultiplayerLocalActivePlayerGameplayManager multiplayerLocalActivePlayerGameplayManager)

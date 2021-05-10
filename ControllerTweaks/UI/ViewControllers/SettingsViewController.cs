@@ -1,96 +1,73 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
-using BeatSaberMarkupLanguage.Components;
 using BeatSaberMarkupLanguage.Settings;
-using ControllerTweaks.Configuration;
 using ControllerTweaks.HarmonyPatches;
+using ControllerTweaks.Interfaces;
+using ControllerTweaks.Managers;
+using HMUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using UnityEngine;
 using Zenject;
 
 namespace ControllerTweaks.UI
 {
-    public partial class SettingsViewController : IInitializable, IDisposable, INotifyPropertyChanged
+    public class SettingsViewController : IInitializable, IDisposable, INotifyPropertyChanged
     {
-        private IVRPlatformHelper vrPlatformHelper;
+        private ControllerTweaksInputManager controllerTweaksInputManager;
+        private int currentSubviewIndex = 0;
 
-        [UIValue("button-options")]
-        private readonly List<object> buttonOptions = new List<object>{
-            "Start",
-            "Left Stick",
-            "Right Stick",
-            "Left Trigger",
-            "Right Trigger",
-            "Left Grip",
-            "Right Grip",
-            "A",
-            "B",
-            "X",
-            "Y"
-        };
+        [UIValue("settings-subviews")]
+        private List<object> settingsSubviewControllers = new List<object>();
+
+        [UIComponent("root-transform")]
+        private RectTransform rootTransform;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public SettingsViewController(IVRPlatformHelper vrPlatformHelper)
+        public SettingsViewController(ControllerTweaksInputManager controllerTweaksInputManager, List<ISettingsSubviewController> settingsSubviewControllers)
         {
-            this.vrPlatformHelper = vrPlatformHelper;
-            VRControllersInputManager_TriggerValue.vrPlatformHelper = vrPlatformHelper;
+            this.controllerTweaksInputManager = controllerTweaksInputManager;
+
+            foreach (var subviewController in settingsSubviewControllers)
+            {
+                this.settingsSubviewControllers.Add(subviewController);
+            }
         }
 
-        public void Initialize() => BSMLSettings.instance.AddSettingsMenu("Controller Tweaks", "ControllerTweaks.UI.Views.SettingsView.bsml", this);
+        public void Initialize()
+        {
+            BSMLSettings.instance.AddSettingsMenu("Controller Tweaks", "ControllerTweaks.UI.Views.SettingsView.bsml", this);
+        }
+
         public void Dispose() => BSMLSettings.instance?.RemoveSettingsMenu(this);
 
         [UIAction("#post-parse")]
         private void PostParse()
         {
-            foreach (var pauseButton in PluginConfig.Instance.PauseButtons)
+            if (settingsSubviewControllers.Count >= 1)
             {
-                pauseButtonList.data.Add(new CustomListTableData.CustomCellInfo(InputManager.ButtonToName[pauseButton]));
+                ((ISettingsSubviewController)settingsSubviewControllers[currentSubviewIndex]).Activate(rootTransform);
             }
-            pauseButtonList.tableView.ReloadData();
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AddPauseInteractable)));
+        }
+
+        [UIAction("settings-subview-selected")]
+        private void SettingsSubviewSelected(SegmentedControl _, int index)
+        {
+            ((ISettingsSubviewController)settingsSubviewControllers[currentSubviewIndex]).Deactivate();
+            ((ISettingsSubviewController)settingsSubviewControllers[index]).Activate(rootTransform);
+            currentSubviewIndex = index;
         }
 
         [UIAction("#apply")]
         public void OnApply()
         {
-            if (PauseRemapEnabled)
+            foreach (var subviewController in settingsSubviewControllers)
             {
-                Plugin.harmony.Patch(VRControllersInputManager_MenuButtonDown.baseMethodInfo, transpiler: VRControllersInputManager_MenuButtonDown.transpilerMethod);
-            }
-            else
-            {
-                Plugin.harmony.Unpatch(VRControllersInputManager_MenuButtonDown.baseMethodInfo, HarmonyLib.HarmonyPatchType.Transpiler, Plugin.HarmonyId);
+                ((ISettingsSubviewController)subviewController).ApplyChanges();
             }
 
-            if (LeftRemapEnabled || RightRemapEnabled)
-            {
-                Plugin.harmony.Patch(VRControllersInputManager_TriggerValue.baseMethodInfo, transpiler: VRControllersInputManager_TriggerValue.transpilerMethod);
-            }
-            else
-            {
-                Plugin.harmony.Unpatch(VRControllersInputManager_TriggerValue.baseMethodInfo, HarmonyLib.HarmonyPatchType.Transpiler, Plugin.HarmonyId);
-            }
-        }
-
-        [UIValue("warning-text")]
-        private string WarningText
-        {
-            get
-            {
-                if (vrPlatformHelper.vrPlatformSDK != VRPlatformSDK.Oculus)
-                {
-                    return "Remap only works for Oculus VR.\nFor SteamVR, use SteamVR's built in button remapper.";
-                }
-                else if (VRControllersInputManager_MenuButtonDown.failedPatch || VRControllersInputManager_TriggerValue.failedPatch)
-                {
-                    return "Remap patch failed.\nPlease check for updates for this mod or contact #pc-help in BSMG.";
-                }
-                else
-                {
-                    return "";
-                }
-            }
+            controllerTweaksInputManager.UpdateInputPatches();
         }
     }
 }

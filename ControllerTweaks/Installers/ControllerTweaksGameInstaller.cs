@@ -1,10 +1,12 @@
 ﻿using ControllerTweaks.Configuration;
+using ControllerTweaks.HarmonyPatches;
 using ControllerTweaks.UI;
+using System.Linq;
 using Zenject;
 
 namespace ControllerTweaks.Installers
 {
-    class ControllerTweaksGameInstaller : Installer
+    public class ControllerTweaksGameInstaller : Installer
     {
         public override void InstallBindings()
         {
@@ -12,7 +14,18 @@ namespace ControllerTweaks.Installers
             {
                 Container.BindInterfacesTo<ControllerSwapper>().AsSingle();
             }
-            Container.BindInterfacesTo<ControllersOffsetPauseViewController>().AsSingle();
+            else
+            {
+                if (Plugin.harmony.GetPatchedMethods().Contains(SaberTypeExtensions_Node.baseMethodInfo))
+                {
+                    Plugin.harmony.Unpatch(SaberTypeExtensions_Node.baseMethodInfo, HarmonyLib.HarmonyPatchType.Prefix, Plugin.HarmonyId);
+                }
+                if (Plugin.harmony.GetPatchedMethods().Contains(ObstacleSaberSparkleEffectManager_Update.baseMethodInfo))
+                {
+                    Plugin.harmony.Unpatch(ObstacleSaberSparkleEffectManager_Update.baseMethodInfo, HarmonyLib.HarmonyPatchType.Transpiler, Plugin.HarmonyId);
+                }
+            }
+            Container.BindInterfacesTo<ControllerOffsetPauseViewController>().AsSingle();
         }
     }
 }
