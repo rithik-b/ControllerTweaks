@@ -12,7 +12,7 @@ namespace ControllerTweaks.HarmonyPatches
     public class VRControllersInputManager_MenuButtonDown
     {
         private static readonly MethodInfo transpilerMethodInfo = SymbolExtensions.GetMethodInfo((IEnumerable<CodeInstruction> instructions) => Transpiler(instructions));
-        internal static readonly MethodInfo baseMethodInfo = typeof(SaberTypeExtensions).GetMethod("Node");
+        internal static readonly MethodInfo baseMethodInfo = typeof(VRControllersInputManager).GetMethod("MenuButtonDown");
         internal static readonly HarmonyMethod transpilerMethod = new HarmonyMethod(transpilerMethodInfo);
 
         internal static readonly MethodInfo getCustomInput = SymbolExtensions.GetMethodInfo(() => GetCustomInput());
@@ -40,6 +40,11 @@ namespace ControllerTweaks.HarmonyPatches
             else if (index == -1)
             {
                 failedPatch = true;
+                Plugin.Log.Error("Pause button remap patch failed. Opcodes:");
+                for (int i = 0; i < codes.Count - 1; i++)
+                {
+                    Plugin.Log.Error(codes[i].opcode + " " + codes[i].operand);
+                }
             }
             return codes.AsEnumerable();
         }

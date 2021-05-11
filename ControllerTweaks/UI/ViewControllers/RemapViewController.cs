@@ -9,17 +9,18 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using UnityEngine;
+using Zenject;
 
 namespace ControllerTweaks.UI
 {
-    public abstract class RemapViewController : ISettingsSubviewController, INotifyPropertyChanged
+    public abstract class RemapViewController : IInitializable, ISettingsSubviewController, INotifyPropertyChanged
     {
         private IVRPlatformHelper vrPlatformHelper;
         private bool _remapEnabledToggle;
 
         protected int selectedButtonTableIndex = -1;
         protected string buttonToAdd = "Start";
-        private bool parsed = false;
+        private bool parsed;
 
         [UIComponent("button-list")]
         public CustomListTableData buttonList;
@@ -32,6 +33,12 @@ namespace ControllerTweaks.UI
         public RemapViewController(IVRPlatformHelper vrPlatformHelper)
         {
             this.vrPlatformHelper = vrPlatformHelper;
+        }
+
+        public void Initialize()
+        {
+            parsed = false;
+            _remapEnabledToggle = ButtonRemapEnabled;
         }
 
         public void Activate(RectTransform parentTransform)
@@ -50,11 +57,14 @@ namespace ControllerTweaks.UI
 
         public void ApplyChanges()
         {
-            ButtonRemapEnabled = RemapEnabledToggle;
-            Buttons.Clear();
-            foreach (var cell in buttonList.data)
+            if (parsed)
             {
-                Buttons.Add(ControllerTweaksInputManager.NameToButton[cell.text]);
+                ButtonRemapEnabled = RemapEnabledToggle;
+                Buttons.Clear();
+                foreach (var cell in buttonList.data)
+                {
+                    Buttons.Add(ControllerTweaksInputManager.NameToButton[cell.text]);
+                }
             }
         }
 
@@ -63,6 +73,7 @@ namespace ControllerTweaks.UI
         [UIAction("#post-parse")]
         protected void PostParse()
         {
+            parsed = true;
             RemapEnabledToggle = ButtonRemapEnabled;
             foreach (var button in Buttons)
             {

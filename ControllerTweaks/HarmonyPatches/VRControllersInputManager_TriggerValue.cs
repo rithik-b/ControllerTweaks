@@ -56,6 +56,12 @@ namespace ControllerTweaks.HarmonyPatches
             else if (index == -1)
             {
                 failedPatch = true;
+                Plugin.Log.Error("Select button remap patch failed.");
+                for (int i = 0; i < codes.Count - 1; i++)
+                {
+                    Plugin.Log.Error(codes[i].opcode + " " + codes[i].operand);
+                }
+                return codes.AsEnumerable();
             }
 
             for (int i = 0; i < codes.Count - 1; i++)
@@ -77,6 +83,11 @@ namespace ControllerTweaks.HarmonyPatches
             else if (index == -1)
             {
                 failedPatch = true;
+                Plugin.Log.Error("Select button remap patch failed. Opcodes:");
+                for (int i = 0; i < codes.Count - 1; i++)
+                {
+                    Plugin.Log.Error(codes[i].opcode + " " + codes[i].operand);
+                }
             }
 
             return codes.AsEnumerable();

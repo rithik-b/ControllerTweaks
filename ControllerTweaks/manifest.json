@@ -3,7 +3,7 @@
     "id": "ControllerTweaks",
     "name": "ControllerTweaks",
     "author": "PixelBoom",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "A few controller related tweaks compiled to one mod.",
     "gameVersion": "1.13.4",
     "dependsOn": {

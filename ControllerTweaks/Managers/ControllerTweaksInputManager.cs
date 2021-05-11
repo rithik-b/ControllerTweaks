@@ -52,24 +52,21 @@ namespace ControllerTweaks.Managers
 
         internal void UpdateInputPatches()
         {
-            if (vrPlatformHelper.vrPlatformSDK != VRPlatformSDK.Oculus)
+            if (vrPlatformHelper.vrPlatformSDK == VRPlatformSDK.Oculus)
             {
-                if (PluginConfig.Instance.PauseRemapEnabled)
+                Plugin.harmony.Unpatch(VRControllersInputManager_MenuButtonDown.baseMethodInfo, HarmonyLib.HarmonyPatchType.Transpiler, Plugin.HarmonyId);
+                Plugin.harmony.Unpatch(VRControllersInputManager_TriggerValue.baseMethodInfo, HarmonyLib.HarmonyPatchType.Transpiler, Plugin.HarmonyId);
+                if (PluginConfig.Instance.PauseRemapEnabled && !Plugin.harmony.GetPatchedMethods().Contains(VRControllersInputManager_MenuButtonDown.baseMethodInfo))
                 {
                     Plugin.harmony.Patch(VRControllersInputManager_MenuButtonDown.baseMethodInfo, transpiler: VRControllersInputManager_MenuButtonDown.transpilerMethod);
                 }
-                else if (Plugin.harmony.GetPatchedMethods().Contains(VRControllersInputManager_MenuButtonDown.baseMethodInfo))
-                {
-                    Plugin.harmony.Unpatch(VRControllersInputManager_MenuButtonDown.baseMethodInfo, HarmonyLib.HarmonyPatchType.Transpiler, Plugin.HarmonyId);
-                }
 
-                if (PluginConfig.Instance.LeftSelectRemapEnabled || PluginConfig.Instance.RightSelectRemapEnabled)
+                if ((PluginConfig.Instance.LeftSelectRemapEnabled || PluginConfig.Instance.RightSelectRemapEnabled) && !Plugin.harmony.GetPatchedMethods().Contains(VRControllersInputManager_TriggerValue.baseMethodInfo))
                 {
                     Plugin.harmony.Patch(VRControllersInputManager_TriggerValue.baseMethodInfo, transpiler: VRControllersInputManager_TriggerValue.transpilerMethod);
                 }
-                else if (Plugin.harmony.GetPatchedMethods().Contains(VRControllersInputManager_TriggerValue.baseMethodInfo))
+                else
                 {
-                    Plugin.harmony.Unpatch(VRControllersInputManager_TriggerValue.baseMethodInfo, HarmonyLib.HarmonyPatchType.Transpiler, Plugin.HarmonyId);
                 }
             }
         }
