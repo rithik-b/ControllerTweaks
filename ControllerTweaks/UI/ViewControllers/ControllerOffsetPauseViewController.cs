@@ -1,17 +1,24 @@
 ﻿using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Attributes;
+using BeatSaberMarkupLanguage.FloatingScreen;
+using ControllerTweaks.Components;
 using ControllerTweaks.Configuration;
 using IPA.Utilities;
+using System;
+using UnityEngine.UI;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using Zenject;
+using HMUI;
+using BeatSaberMarkupLanguage.Components.Settings;
 
 namespace ControllerTweaks.UI
 {
-    public class ControllerOffsetPauseViewController : IInitializable, INotifyPropertyChanged
+    public class ControllerOffsetPauseViewController : IInitializable, IDisposable, INotifyPropertyChanged
     {
+        private FloatingScreen floatingScreen;
         private readonly PauseMenuManager pauseMenuManager;
         private VRControllersValueSOOffsets vrControllerTransformOffset;
         private VRController leftController;
@@ -21,9 +28,36 @@ namespace ControllerTweaks.UI
         private Vector3SO rotationOffset;
         private OffsetPreset selectedPreset;
 
+        [UIComponent("position-x-slider")]
+        private SliderSetting positionXSlider;
+
+        [UIComponent("position-y-slider")]
+        private SliderSetting positionYSlider;
+
+        [UIComponent("position-z-slider")]
+        private SliderSetting positionZSlider;
+
+        [UIComponent("rotation-x-slider")]
+        private SliderSetting rotationXSlider;
+
+        [UIComponent("rotation-y-slider")]
+        private SliderSetting rotationYSlider;
+
+        [UIComponent("rotation-z-slider")]
+        private SliderSetting rotationZSlider;
+
+        [UIComponent("left-button")]
+        private RectTransform leftButton;
+
+        [UIComponent("right-button")]
+        private RectTransform rightButton;
+
         public static readonly FieldAccessor<VRController, VRControllerTransformOffset>.Accessor VRControllerTransformOffsetAccessor = FieldAccessor<VRController, VRControllerTransformOffset>.GetAccessor("_transformOffset");
         public static readonly FieldAccessor<VRControllersValueSOOffsets, Vector3SO>.Accessor PositionOffsetAccessor = FieldAccessor<VRControllersValueSOOffsets, Vector3SO>.GetAccessor("_positionOffset");
         public static readonly FieldAccessor<VRControllersValueSOOffsets, Vector3SO>.Accessor RotationOffsetAccessor = FieldAccessor<VRControllersValueSOOffsets, Vector3SO>.GetAccessor("_rotationOffset");
+        
+        public static readonly float kPositionStep = 0.1f;
+        public static readonly float kRotationStep = 1f;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -40,12 +74,33 @@ namespace ControllerTweaks.UI
             positionOffset = PositionOffsetAccessor(ref vrControllerTransformOffset);
             rotationOffset = RotationOffsetAccessor(ref vrControllerTransformOffset);
 
-            BSMLParser.instance.Parse(BeatSaberMarkupLanguage.Utilities.GetResourceContent(Assembly.GetExecutingAssembly(), "ControllerTweaks.UI.Views.ControllerOffsetPauseView.bsml"), pauseMenuManager.transform.Find("Wrapper").Find("MenuWrapper").Find("Canvas").Find("MainBar").gameObject, this);
+            floatingScreen = FloatingScreen.CreateFloatingScreen(new Vector2(115, 50), true, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+            floatingScreen.transform.SetParent(pauseMenuManager.transform.Find("Wrapper").Find("MenuWrapper").Find("Canvas").Find("MainBar").transform);
+            floatingScreen.transform.localPosition = new Vector3(0, 35, 0);
+            BSMLParser.instance.Parse(BeatSaberMarkupLanguage.Utilities.GetResourceContent(Assembly.GetExecutingAssembly(), "ControllerTweaks.UI.Views.ControllerOffsetPauseView.bsml"), floatingScreen.gameObject, this);
 
             if (PresetIndex != 0)
             {
                 selectedPreset = PluginConfig.Instance.OffsetPresets.Values.ToArray()[PluginConfig.Instance.SelectedPreset - 1];
             }
+        }
+
+        public void Dispose()
+        {
+            GameObject.Destroy(floatingScreen);
+        }
+
+        [UIAction("#post-parse")]
+        protected void PostParse()
+        {
+            SliderButton.Register(GameObject.Instantiate(leftButton), GameObject.Instantiate(rightButton), positionXSlider, kPositionStep);
+            SliderButton.Register(GameObject.Instantiate(leftButton), GameObject.Instantiate(rightButton), positionYSlider, kPositionStep);
+            SliderButton.Register(GameObject.Instantiate(leftButton), GameObject.Instantiate(rightButton), positionZSlider, kPositionStep);
+            SliderButton.Register(GameObject.Instantiate(leftButton), GameObject.Instantiate(rightButton), rotationXSlider, kRotationStep);
+            SliderButton.Register(GameObject.Instantiate(leftButton), GameObject.Instantiate(rightButton), rotationYSlider, kRotationStep);
+            SliderButton.Register(GameObject.Instantiate(leftButton), GameObject.Instantiate(rightButton), rotationZSlider, kRotationStep);
+            GameObject.Destroy(leftButton.gameObject);
+            GameObject.Destroy(rightButton.gameObject);
         }
 
         [UIAction("preset-formatter")]

@@ -137,6 +137,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\SliderButton.cs" />
     <Compile Include="Configuration\OffsetPreset.cs" />
     <Compile Include="ControllerSwapper.cs" />
     <Compile Include="HarmonyPatches\ObstacleSaberSparkleEffectManager_Update.cs" />
