@@ -154,6 +154,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\ViewControllers\ControllerOffsetPauseViewController.cs" />
     <Compile Include="Interfaces\ISettingsSubViewController.cs" />
+    <Compile Include="UI\ViewControllers\ControllerOffsetPresetsModalController.cs" />
     <Compile Include="UI\ViewControllers\LeftSelectRemapViewController.cs" />
     <Compile Include="UI\ViewControllers\ModifierViewController.cs" />
     <Compile Include="UI\ViewControllers\PauseRemapViewController.cs" />
@@ -172,6 +173,7 @@
     <EmbeddedResource Include="UI\Views\SettingsView.bsml" />
     <EmbeddedResource Include="UI\Views\ControllerOffsetPauseView.bsml" />
     <EmbeddedResource Include="UI\Views\RemapView.bsml" />
+    <EmbeddedResource Include="UI\Views\ControllerOffsetPresetModal.bsml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">

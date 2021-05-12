@@ -8,5 +8,10 @@
         public virtual float rotationX { get; set; }
         public virtual float rotationY { get; set; }
         public virtual float rotationZ { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("Position: ({0}, {1}, {2}), Angle: ({3}, {4}, {5})", positionX, positionY, positionZ, rotationX, rotationY, rotationZ);
+        }
     }
 }

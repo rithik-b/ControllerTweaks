@@ -30,7 +30,7 @@ namespace ControllerTweaks.Configuration
         [UseConverter(typeof(DictionaryConverter<OffsetPreset>))]
         [NonNullable]
         public virtual Dictionary<string, OffsetPreset> OffsetPresets { get; set; } = new Dictionary<string, OffsetPreset>();
-        public virtual int SelectedPreset { get; set; } = 0;
+        public virtual bool ShowControllerOffsetInPracticeMode { get; set; } = false;
 
         /// <summary>
         /// This is called whenever BSIPA reads the config from disk (including when file changes are detected).

@@ -2,6 +2,7 @@
 	<vertical>
 		<modifier-container child-expand-width='true' horizontal-fit='PreferredSize'>
 			<checkbox-setting text='Controller Swap' value='controller-swap-enabled' apply-on-change='true' hover-hint='Swap the left and right controllers. Useful for grips that require holding the opposite controllers.' />
+			<checkbox-setting text='Controller Offsets in Practice Mode' value='controller-offset-enabled' apply-on-change='true' hover-hint='Show the controller offset adjustment menu in practice mode. Useful for finding your perfect controller offset.' />
 		</modifier-container>
 		<clickable-image src='~imagesrc' pref-height='10' preserve-aspect='true' on-click='image-click' highlight-color='white' hover-hint='Mod commissioned by Electrostats.' />
 	</vertical>

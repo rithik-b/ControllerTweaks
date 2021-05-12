@@ -55,6 +55,17 @@ namespace ControllerTweaks.UI
             }
         }
 
+        [UIValue("controller-offset-enabled")]
+        private bool ControllerOffsetEnabled
+        {
+            get => PluginConfig.Instance.ControllerSwapEnabled;
+            set
+            {
+                PluginConfig.Instance.ShowControllerOffsetInPracticeMode = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ControllerOffsetEnabled)));
+            }
+        }
+
         [UIValue("imagesrc")]
         private string ImageSrc
         {

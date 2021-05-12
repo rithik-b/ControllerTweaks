@@ -14,7 +14,7 @@
 				<slider-setting id='rotation-z-slider' text='Z' value='rotation-z' min='-180' max='180' increment='1' apply-on-change='true' bind-value='true' />
 			</vertical>
 		</horizontal>
-		<increment-setting text='Offset Preset' value='offset-preset' formatter='preset-formatter' min='0' max='~max-preset' increment='1' integer-only='true' apply-on-change='true' bind-value='true' />
+		<button id='show-presets-button' text='Presets' on-click='show-presets-modal' />
 	</vertical>
 	<button id='left-button' text='&lt;' direction='Left' />
 	<button id='right-button' text='&gt;' direction='Right' />

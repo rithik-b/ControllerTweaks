@@ -5,13 +5,11 @@ using ControllerTweaks.Components;
 using ControllerTweaks.Configuration;
 using IPA.Utilities;
 using System;
-using UnityEngine.UI;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using Zenject;
-using HMUI;
 using BeatSaberMarkupLanguage.Components.Settings;
 
 namespace ControllerTweaks.UI
@@ -20,6 +18,8 @@ namespace ControllerTweaks.UI
     {
         private FloatingScreen floatingScreen;
         private readonly PauseMenuManager pauseMenuManager;
+        private readonly ControllerOffsetPresetsModalController controllerOffsetPresetsModalController;
+
         private VRControllersValueSOOffsets vrControllerTransformOffset;
         private VRController leftController;
         private VRController rightController;
@@ -52,6 +52,9 @@ namespace ControllerTweaks.UI
         [UIComponent("right-button")]
         private RectTransform rightButton;
 
+        [UIComponent("show-presets-button")]
+        private RectTransform showPresetsButton;
+
         public static readonly FieldAccessor<VRController, VRControllerTransformOffset>.Accessor VRControllerTransformOffsetAccessor = FieldAccessor<VRController, VRControllerTransformOffset>.GetAccessor("_transformOffset");
         public static readonly FieldAccessor<VRControllersValueSOOffsets, Vector3SO>.Accessor PositionOffsetAccessor = FieldAccessor<VRControllersValueSOOffsets, Vector3SO>.GetAccessor("_positionOffset");
         public static readonly FieldAccessor<VRControllersValueSOOffsets, Vector3SO>.Accessor RotationOffsetAccessor = FieldAccessor<VRControllersValueSOOffsets, Vector3SO>.GetAccessor("_rotationOffset");
@@ -61,9 +64,10 @@ namespace ControllerTweaks.UI
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ControllerOffsetPauseViewController(PauseMenuManager pauseMenuManager, SaberManager saberManager)
+        public ControllerOffsetPauseViewController(PauseMenuManager pauseMenuManager, ControllerOffsetPresetsModalController controllerOffsetPresetsModalController, SaberManager saberManager)
         {
             this.pauseMenuManager = pauseMenuManager;
+            this.controllerOffsetPresetsModalController = controllerOffsetPresetsModalController;
             leftController = saberManager?.leftSaber.GetComponentInParent<VRController>();
             rightController = saberManager?.rightSaber.GetComponentInParent<VRController>();
         }
@@ -74,15 +78,10 @@ namespace ControllerTweaks.UI
             positionOffset = PositionOffsetAccessor(ref vrControllerTransformOffset);
             rotationOffset = RotationOffsetAccessor(ref vrControllerTransformOffset);
 
-            floatingScreen = FloatingScreen.CreateFloatingScreen(new Vector2(115, 50), true, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+            floatingScreen = FloatingScreen.CreateFloatingScreen(new Vector2(115, 55), true, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
             floatingScreen.transform.SetParent(pauseMenuManager.transform.Find("Wrapper").Find("MenuWrapper").Find("Canvas").Find("MainBar").transform);
             floatingScreen.transform.localPosition = new Vector3(0, 35, 0);
             BSMLParser.instance.Parse(BeatSaberMarkupLanguage.Utilities.GetResourceContent(Assembly.GetExecutingAssembly(), "ControllerTweaks.UI.Views.ControllerOffsetPauseView.bsml"), floatingScreen.gameObject, this);
-
-            if (PresetIndex != 0)
-            {
-                selectedPreset = PluginConfig.Instance.OffsetPresets.Values.ToArray()[PluginConfig.Instance.SelectedPreset - 1];
-            }
         }
 
         public void Dispose()
@@ -103,7 +102,6 @@ namespace ControllerTweaks.UI
             GameObject.Destroy(rightButton.gameObject);
         }
 
-        [UIAction("preset-formatter")]
         private string PresetFormatter(int index)
         {
             if (index == 0)
@@ -113,7 +111,13 @@ namespace ControllerTweaks.UI
             return PluginConfig.Instance.OffsetPresets.Keys.ToArray()[index - 1];
         }
 
-        [UIValue("offset-preset")]
+        [UIAction("show-presets-modal")]
+        private void ShowPresetsModal()
+        {
+            controllerOffsetPresetsModalController.ShowModal(showPresetsButton);
+        }
+
+        /*
         private int PresetIndex
         {
             get => PluginConfig.Instance.SelectedPreset;
@@ -147,6 +151,7 @@ namespace ControllerTweaks.UI
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PresetIndex)));
             }
         }
+        */
 
         [UIValue("max-preset")]
         private int MaxPreset => PluginConfig.Instance.OffsetPresets.Count;
@@ -158,12 +163,6 @@ namespace ControllerTweaks.UI
             set
             {
                 positionOffset.value = new Vector3(value / 100f, PositionY / 100f, PositionZ / 100f);
-
-                if (PresetIndex != 0)
-                {
-                    selectedPreset.positionX = value / 100f;
-                }
-
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PositionX)));
             }
         }
@@ -175,12 +174,6 @@ namespace ControllerTweaks.UI
             set
             {
                 positionOffset.value = new Vector3(PositionX / 100f, value / 100f, PositionZ / 100f);
-
-                if (PresetIndex != 0)
-                {
-                    selectedPreset.positionY = value / 100f;
-                }
-
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PositionY)));
             }
         }
@@ -192,12 +185,6 @@ namespace ControllerTweaks.UI
             set
             {
                 positionOffset.value = new Vector3(PositionX / 100f, PositionY / 100f, value / 100f);
-
-                if (PresetIndex != 0)
-                {
-                    selectedPreset.positionZ = value / 100f;
-                }
-
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PositionZ)));
             }
         }
@@ -209,12 +196,6 @@ namespace ControllerTweaks.UI
             set
             {
                 rotationOffset.value = new Vector3(value, RotationY, RotationZ);
-
-                if (PresetIndex != 0)
-                {
-                    selectedPreset.rotationX = value;
-                }
-
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RotationX)));
             }
         }
@@ -226,12 +207,6 @@ namespace ControllerTweaks.UI
             set
             {
                 rotationOffset.value = new Vector3(RotationX, value, RotationZ);
-
-                if (PresetIndex != 0)
-                {
-                    selectedPreset.rotationY = value;
-                }
-
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RotationY)));
             }
         }
@@ -243,12 +218,6 @@ namespace ControllerTweaks.UI
             set
             {
                 rotationOffset.value = new Vector3(RotationX, RotationY, value);
-
-                if (PresetIndex != 0)
-                {
-                    selectedPreset.rotationZ = value;
-                }
-
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RotationZ)));
             }
         }

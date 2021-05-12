@@ -25,7 +25,11 @@ namespace ControllerTweaks.Installers
                     Plugin.harmony.Unpatch(ObstacleSaberSparkleEffectManager_Update.baseMethodInfo, HarmonyLib.HarmonyPatchType.Transpiler, Plugin.HarmonyId);
                 }
             }
-            Container.BindInterfacesTo<ControllerOffsetPauseViewController>().AsSingle();
+            if (PluginConfig.Instance.ShowControllerOffsetInPracticeMode)
+            {
+                Container.BindInterfacesTo<ControllerOffsetPauseViewController>().AsSingle();
+                Container.BindInterfacesAndSelfTo<ControllerOffsetPresetsModalController>().AsSingle();
+            }
         }
     }
 }
