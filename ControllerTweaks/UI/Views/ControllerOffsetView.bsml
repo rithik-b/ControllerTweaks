@@ -1,4 +1,4 @@
-﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+﻿<bg id='root' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
 	<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize' anchor-pos-x='5' preferred-height='45' preferred-width='100'>
 		<horizontal spacing='5'>
 			<vertical preferred-width='45' preferred-height='35'>
@@ -16,6 +16,7 @@
 		</horizontal>
 		<button id='show-presets-button' text='Presets' on-click='show-presets-modal' />
 	</vertical>
+	<button text='&lt;' on-click='back-button-clicked' anchor-pos-x='20' active='~back-button-active' />
 	<button id='left-button' text='&lt;' direction='Left' />
 	<button id='right-button' text='&gt;' direction='Right' />
 </bg>

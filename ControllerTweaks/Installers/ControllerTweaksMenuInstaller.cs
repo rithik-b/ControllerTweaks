@@ -8,6 +8,8 @@ namespace ControllerTweaks.Installers
         public override void InstallBindings()
         {
             Container.BindInterfacesTo<ModifierViewController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<ControllerOffsetModifierViewController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<ControllerOffsetPresetsModalController>().AsSingle();
             Container.BindInterfacesTo<SettingsViewController>().AsSingle();
             Container.BindInterfacesTo<PauseRemapViewController>().AsSingle();
             Container.BindInterfacesTo<LeftSelectRemapViewController>().AsSingle();

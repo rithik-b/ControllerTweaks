@@ -11,7 +11,7 @@
 
         public override string ToString()
         {
-            return string.Format("Position: ({0}, {1}, {2}), Angle: ({3}, {4}, {5})", positionX, positionY, positionZ, rotationX, rotationY, rotationZ);
+            return string.Format("Position: ({0:0.#}, {1:0.#}, {2:0.#}), Angle: ({3}, {4}, {5})", positionX * 100f, positionY * 100f, positionZ * 100f, rotationX, rotationY, rotationZ);
         }
     }
 }

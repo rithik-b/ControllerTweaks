@@ -1,29 +1,48 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.GameplaySetup;
 using ControllerTweaks.Configuration;
-using ControllerTweaks.HarmonyPatches;
 using System;
 using System.ComponentModel;
+using UnityEngine;
 using Zenject;
 
 namespace ControllerTweaks.UI
 {
-    class ModifierViewController : IInitializable, IDisposable, INotifyPropertyChanged
+    public class ModifierViewController : IInitializable, IDisposable, INotifyPropertyChanged
     {
+        private readonly ControllerOffsetModifierViewController controllerOffsetModifierViewController;
+
         private int clicksToChange = 5;
         private string _imagesrc;
 
+        [UIComponent("root")]
+        private readonly RectTransform rootTransform;
+
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ModifierViewController(ControllerOffsetModifierViewController controllerOffsetModifierViewController)
+        {
+            this.controllerOffsetModifierViewController = controllerOffsetModifierViewController;
+        }
 
         public void Initialize()
         {
             GameplaySetup.instance.AddTab("Controller Tweaks", "ControllerTweaks.UI.Views.ModifierView.bsml", this);
             ImageSrc = "ControllerTweaks.Images.ElectroMint_uncropped.png";
+            controllerOffsetModifierViewController.backButtonClickedEvent += ControllerOffsetModifierViewController_backButtonClicked;
         }
 
         public void Dispose()
         {
             GameplaySetup.instance?.RemoveTab("Controller Tweaks");
+            controllerOffsetModifierViewController.backButtonClickedEvent -= ControllerOffsetModifierViewController_backButtonClicked;
+        }
+
+        [UIAction("show-offset-menu")]
+        private void ShowOffsetMenu()
+        {
+            controllerOffsetModifierViewController.ShowMenu(rootTransform);
+            rootTransform.gameObject.SetActive(false);
         }
 
         [UIAction("image-click")]
@@ -42,6 +61,11 @@ namespace ControllerTweaks.UI
                     ImageSrc = "ControllerTweaks.Images.ElectroMint_uncropped.png";
                 }
             }
+        }
+
+        private void ControllerOffsetModifierViewController_backButtonClicked()
+        {
+            rootTransform.gameObject.SetActive(true);
         }
 
         [UIValue("controller-swap-enabled")]

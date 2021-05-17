@@ -5,11 +5,11 @@
 			<list id='list' pref-height='30' select-cell='select-cell' list-style='List' />
 			<page-button event-click='list#PageDown' direction='Down' ignore-layout='true' anchor-min-y='-0.8' anchor-pos-x='35' anchor-pos-y='-8' pref-width='12' active='~scroll-buttons-enabled' />
 		</vertical>
-		<button text='+' click-event='open-keyboard' anchor-pos-x ='5' anchor-pos-y='-40.5' />
+		<button text='+' click-event='open-keyboard' anchor-pos-x ='5' anchor-pos-y='-40.5' active='~add-button-active' />
+		<modal-keyboard show-event='open-keyboard' on-enter='create-preset' />
 		<button text='Load' on-click='load-preset' anchor-pos-x ='15' anchor-pos-y='-40.5' interactable='~modify-buttons-enabled' />
 		<button text='Save' on-click='save-preset' anchor-pos-x ='27.5' anchor-pos-y='-40.5' interactable='~modify-buttons-enabled' />
 		<button text='Delete' on-click='delete-preset' anchor-pos-x ='41.5' anchor-pos-y='-40.5' interactable='~modify-buttons-enabled' />
-		<modal-keyboard show-event='open-keyboard' />
 		<button text='x' click-event='close-modal' anchor-pos-x ='60' anchor-pos-y='-5' />
 	</modal>
 </bg>

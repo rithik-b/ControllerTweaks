@@ -1,5 +1,5 @@
 ﻿using ControllerTweaks.HarmonyPatches;
-using IPA.Utilities;
+using ControllerTweaks.Utilities;
 using System;
 using System.Linq;
 using Zenject;
@@ -10,8 +10,6 @@ namespace ControllerTweaks
     {
         private VRController leftController;
         private VRController rightController;
-
-        public static readonly FieldAccessor<MultiplayerLocalActivePlayerGameplayManager, SaberManager>.Accessor SaberManagerAccessor = FieldAccessor<MultiplayerLocalActivePlayerGameplayManager, SaberManager>.GetAccessor("_saberManager");
 
         public ControllerSwapper([InjectOptional] SaberManager saberManager)
         {
@@ -50,7 +48,7 @@ namespace ControllerTweaks
         private void MultiplayerLocalActivePlayerGameplayManagerHasStarted(MultiplayerLocalActivePlayerGameplayManager multiplayerLocalActivePlayerGameplayManager)
         {
             MultiplayerLocalActivePlayerGameplayManager_Start.MultiplayerLocalActivePlayerGameplayManagerHasStarted -= MultiplayerLocalActivePlayerGameplayManagerHasStarted;
-            SaberManager saberManager = SaberManagerAccessor(ref multiplayerLocalActivePlayerGameplayManager);
+            SaberManager saberManager = Accessors.SaberManagerAccessor(ref multiplayerLocalActivePlayerGameplayManager);
             leftController = saberManager?.leftSaber.GetComponentInParent<VRController>();
             rightController = saberManager?.rightSaber.GetComponentInParent<VRController>();
             leftController.node = UnityEngine.XR.XRNode.RightHand;
