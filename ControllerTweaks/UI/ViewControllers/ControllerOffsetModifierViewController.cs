@@ -1,6 +1,5 @@
 ﻿using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Attributes;
-using BeatSaberMarkupLanguage.Parser;
 using ControllerTweaks.Utilities;
 using System;
 using System.Reflection;
@@ -10,15 +9,13 @@ namespace ControllerTweaks.UI
 {
     public class ControllerOffsetModifierViewController : ControllerOffsetViewController
     {
+        private GameplaySetupViewController gameplaySetupViewController;
         private bool parsed = false;
-
         internal event Action backButtonClickedEvent;
 
-        [UIComponent("root")]
-        private readonly RectTransform rootTransform;
-
-        public ControllerOffsetModifierViewController(MainSettingsMenuViewController mainSettingsMenuViewController, ControllerOffsetPresetsModalController controllerOffsetPresetsModalController) : base(controllerOffsetPresetsModalController)
+        public ControllerOffsetModifierViewController(GameplaySetupViewController gameplaySetupViewController, MainSettingsMenuViewController mainSettingsMenuViewController, ControllerOffsetPresetsModalController controllerOffsetPresetsModalController, ControllerOffsetSettingsModalController controllerOffsetSettingsModalController) : base(controllerOffsetPresetsModalController, controllerOffsetSettingsModalController)
         {
+            this.gameplaySetupViewController = gameplaySetupViewController;
             SettingsSubMenuInfo[] settingsSubMenuInfos = Accessors.SettingsSubMenuInfoAccessor(ref mainSettingsMenuViewController);
             foreach (var settingSubMenuInfo in settingsSubMenuInfos)
             {
@@ -35,6 +32,26 @@ namespace ControllerTweaks.UI
         {
             base.Initialize();
             parsed = false;
+            gameplaySetupViewController.didActivateEvent += GameplaySetupViewController_didActivateEvent;
+            gameplaySetupViewController.didDeactivateEvent += GameplaySetupViewController_didDeactivateEvent;
+        }
+
+        public override void Dispose()
+        {
+            gameplaySetupViewController.didActivateEvent -= GameplaySetupViewController_didActivateEvent;
+            gameplaySetupViewController.didDeactivateEvent -= GameplaySetupViewController_didDeactivateEvent;
+        }
+
+        private void GameplaySetupViewController_didActivateEvent(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
+        {
+            controllerOffsetPresetsModalController.OnActivate();
+            controllerOffsetSettingsModalController.OnActivate();
+        }
+
+        private void GameplaySetupViewController_didDeactivateEvent(bool removedFromHierarchy, bool screenSystemDisabling)
+        {
+            controllerOffsetPresetsModalController.OnDeactivate();
+            controllerOffsetSettingsModalController.OnDeactivate();
         }
 
         private void Parse(RectTransform sibling)

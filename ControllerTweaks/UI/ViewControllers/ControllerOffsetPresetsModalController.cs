@@ -5,6 +5,7 @@ using BeatSaberMarkupLanguage.Parser;
 using ControllerTweaks.Configuration;
 using ControllerTweaks.Utilities;
 using HMUI;
+using IPA.Utilities;
 using System;
 using System.ComponentModel;
 using System.Reflection;
@@ -25,10 +26,22 @@ namespace ControllerTweaks.UI
         [UIComponent("list")]
         public CustomListTableData customListTableData;
 
+        [UIComponent("root")]
+        private readonly RectTransform rootTransform;
+
+        [UIComponent("modal")]
+        internal ModalView modalView;
+
         [UIComponent("modal")]
         private readonly RectTransform modalTransform;
 
         private Vector3 modalPosition;
+
+        [UIComponent("keyboard")]
+        private ModalView keyboardModalView;
+
+        [UIComponent("keyboard")]
+        private readonly RectTransform keyboardModalTransform;
 
         [UIParams]
         private readonly BSMLParserParams parserParams;
@@ -65,16 +78,35 @@ namespace ControllerTweaks.UI
             parsed = false;
         }
 
+        internal void OnActivate()
+        {
+            if (parsed && modalTransform != null)
+            {
+                modalTransform.gameObject.SetActive(false);
+            }
+        }
+
+        internal void OnDeactivate()
+        {
+            if (parsed && rootTransform != null && modalTransform != null && keyboardModalTransform != null)
+            {
+                keyboardModalTransform.SetParent(modalTransform);
+                modalTransform.SetParent(rootTransform);
+            }
+        }
+
         private void Parse(RectTransform parent, bool addButtonActive)
         {
             if (!parsed)
             {
                 BSMLParser.instance.Parse(BeatSaberMarkupLanguage.Utilities.GetResourceContent(Assembly.GetExecutingAssembly(), "ControllerTweaks.UI.Views.ControllerOffsetPresetModal.bsml"), parent.gameObject, this);
                 modalPosition = modalTransform.localPosition;
+                FieldAccessor<ModalView, bool>.Set(ref keyboardModalView, "_animateParentCanvas", false);
                 parsed = true;
             }
             modalTransform.SetParent(parent);
-            modalTransform.localPosition = modalPosition; // Reset position
+            modalTransform.localPosition = modalPosition;
+            FieldAccessor<ModalView, bool>.Set(ref modalView, "_animateParentCanvas", true);
             AddButtonActive = addButtonActive;
         }
 
@@ -113,7 +145,7 @@ namespace ControllerTweaks.UI
         {
             if (!PluginConfig.Instance.OffsetPresets.ContainsKey(presetName))
             {
-                OffsetPreset newPreset = new OffsetPreset();
+                ControllerOffset newPreset = new ControllerOffset();
                 PluginConfig.Instance.OffsetPresets.Add(presetName, newPreset);
                 customListTableData.data.Add(new CustomListTableData.CustomCellInfo(presetName, newPreset.ToString()));
                 customListTableData.tableView.ScrollToCellWithIdx(customListTableData.data.Count, TableView.ScrollPositionType.End, true);
@@ -126,7 +158,7 @@ namespace ControllerTweaks.UI
         {
             if (selectedIndex != -1)
             {
-                OffsetPreset selectedPreset = PluginConfig.Instance.OffsetPresets[customListTableData.data[selectedIndex].text];
+                ControllerOffset selectedPreset = PluginConfig.Instance.OffsetPresets[customListTableData.data[selectedIndex].text];
                 positionOffset.value = new Vector3(Mathf.Clamp(selectedPreset.positionX, -0.1f, 0.1f), Mathf.Clamp(selectedPreset.positionY, -0.1f, 0.1f), Mathf.Clamp(selectedPreset.positionZ, -0.1f, 0.1f));
                 rotationOffset.value = new Vector3(Mathf.Clamp(selectedPreset.rotationX, -180f, 180f), Mathf.Clamp(selectedPreset.rotationY, -180f, 180f), Mathf.Clamp(selectedPreset.rotationZ, -180f, 180f));
                 offsetPresetLoadedEvent?.Invoke();
@@ -141,13 +173,8 @@ namespace ControllerTweaks.UI
         {
             if (selectedIndex != -1)
             {
-                OffsetPreset selectedPreset = PluginConfig.Instance.OffsetPresets[customListTableData.data[selectedIndex].text];
-                selectedPreset.positionX = positionOffset.value.x;
-                selectedPreset.positionY = positionOffset.value.y;
-                selectedPreset.positionZ = positionOffset.value.z;
-                selectedPreset.rotationX = rotationOffset.value.x;
-                selectedPreset.rotationY = rotationOffset.value.y;
-                selectedPreset.rotationZ = rotationOffset.value.z;
+                ControllerOffset selectedPreset = new ControllerOffset(positionOffset, rotationOffset);
+                PluginConfig.Instance.OffsetPresets[customListTableData.data[selectedIndex].text] = selectedPreset;
                 customListTableData.data[selectedIndex].subtext = selectedPreset.ToString();
                 customListTableData.tableView.ClearSelection();
                 customListTableData.tableView.ReloadData();

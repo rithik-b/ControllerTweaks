@@ -138,7 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\SliderButton.cs" />
-    <Compile Include="Configuration\OffsetPreset.cs" />
+    <Compile Include="Configuration\ControllerOffset.cs" />
     <Compile Include="ControllerSwapper.cs" />
     <Compile Include="HarmonyPatches\ObstacleSaberSparkleEffectManager_Update.cs" />
     <Compile Include="HarmonyPatches\MultiplayerLocalActivePlayerGameplayManager_Start.cs" />
@@ -146,6 +146,7 @@
     <Compile Include="HarmonyPatches\VRControllersInputManager_MenuButtonDown.cs" />
     <Compile Include="HarmonyPatches\VRControllersInputManager_TriggerValue.cs" />
     <Compile Include="Installers\ControllerTweaksApplicationInstaller.cs" />
+    <Compile Include="Installers\ControllerTweaksStandardInstaller.cs" />
     <Compile Include="Managers\ControllerTweaksInputManager.cs" />
     <Compile Include="Installers\ControllerTweaksGameInstaller.cs" />
     <Compile Include="Installers\ControllerTweaksMenuInstaller.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="UI\ViewControllers\ControllerOffsetPauseViewController.cs" />
     <Compile Include="Interfaces\ISettingsSubViewController.cs" />
     <Compile Include="UI\ViewControllers\ControllerOffsetPresetsModalController.cs" />
+    <Compile Include="UI\ViewControllers\ControllerOffsetSettingsModalController.cs" />
     <Compile Include="UI\ViewControllers\ControllerOffsetViewController.cs" />
     <Compile Include="UI\ViewControllers\LeftSelectRemapViewController.cs" />
     <Compile Include="UI\ViewControllers\ModifierViewController.cs" />
@@ -177,6 +179,7 @@
     <EmbeddedResource Include="UI\Views\ControllerOffsetView.bsml" />
     <EmbeddedResource Include="UI\Views\RemapView.bsml" />
     <EmbeddedResource Include="UI\Views\ControllerOffsetPresetModal.bsml" />
+    <EmbeddedResource Include="UI\Views\ControllerOffsetSettingsModal.bsml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">

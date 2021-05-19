@@ -14,7 +14,10 @@
 				<slider-setting id='rotation-z-slider' text='Z' value='rotation-z' min='-180' max='180' increment='1' apply-on-change='true' bind-value='true' />
 			</vertical>
 		</horizontal>
-		<button id='show-presets-button' text='Presets' on-click='show-presets-modal' />
+		<horizontal pad-left='15' pad-right='15'>
+			<button id='show-settings-button' text='⚙' on-click='show-settings-modal' />
+			<button id='show-presets-button' text='Presets' on-click='show-presets-modal' />
+		</horizontal>
 	</vertical>
 	<button text='&lt;' on-click='back-button-clicked' anchor-pos-x='20' active='~back-button-active' />
 	<button id='left-button' text='&lt;' direction='Left' />

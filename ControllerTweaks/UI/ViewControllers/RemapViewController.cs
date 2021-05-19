@@ -81,6 +81,7 @@ namespace ControllerTweaks.UI
             }
             buttonList.tableView.ReloadData();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AddButtonInteractable)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WarningText)));
             Deactivate();
         }
 
@@ -90,6 +91,7 @@ namespace ControllerTweaks.UI
             buttonList.data.Add(new CustomListTableData.CustomCellInfo(buttonToAdd));
             buttonList.tableView.ReloadData();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AddButtonInteractable)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WarningText)));
         }
 
         [UIAction("remove-button-clicked")]
@@ -163,11 +165,15 @@ namespace ControllerTweaks.UI
             {
                 if (vrPlatformHelper.vrPlatformSDK != VRPlatformSDK.Oculus)
                 {
-                    return "Remap only works for Oculus VR.\nFor SteamVR, use SteamVR's built in button remapper.";
+                    return "<color=red>Remap only works for Oculus VR.\nFor SteamVR, use SteamVR's built in button remapper.</color>";
                 }
                 else if (VRControllersInputManager_MenuButtonDown.failedPatch || VRControllersInputManager_TriggerValue.failedPatch)
                 {
-                    return "Remap patch failed.\nPlease check for updates for this mod or contact #pc-help in BSMG.";
+                    return "<color=red>Remap patch failed.\nPlease check for updates for this mod or contact #pc-help in BSMG.</color>";
+                }
+                else if (buttonList?.data.Count == 0)
+                {
+                    return "Make sure you click \"+\" to bind a button.";
                 }
                 else
                 {

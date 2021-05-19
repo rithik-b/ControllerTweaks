@@ -54,7 +54,8 @@ namespace ControllerTweaks.Components
         {
             if (slider != null)
             {
-                slider.associatedValue.SetValue((float)slider.associatedValue.GetValue() + step);
+                slider.slider.value += step;
+                slider.slider.HandleNormalizedValueDidChange(slider.slider, slider.slider.NormalizeValue(slider.slider.value));
             }
         }
 

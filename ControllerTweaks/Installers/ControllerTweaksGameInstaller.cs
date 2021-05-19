@@ -1,6 +1,5 @@
 ﻿using ControllerTweaks.Configuration;
 using ControllerTweaks.HarmonyPatches;
-using ControllerTweaks.UI;
 using System.Linq;
 using Zenject;
 
@@ -24,11 +23,6 @@ namespace ControllerTweaks.Installers
                 {
                     Plugin.harmony.Unpatch(ObstacleSaberSparkleEffectManager_Update.baseMethodInfo, HarmonyLib.HarmonyPatchType.Transpiler, Plugin.HarmonyId);
                 }
-            }
-            if (PluginConfig.Instance.ShowControllerOffsetInPracticeMode)
-            {
-                Container.BindInterfacesTo<ControllerOffsetPauseViewController>().AsSingle();
-                Container.BindInterfacesAndSelfTo<ControllerOffsetPresetsModalController>().AsSingle();
             }
         }
     }

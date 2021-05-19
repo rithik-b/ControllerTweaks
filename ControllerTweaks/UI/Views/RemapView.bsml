@@ -1,6 +1,6 @@
 ﻿<bg id='root-transform' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
 	<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
-		<text text='~warning-text' color='red' />
+		<text text='~warning-text' rich-text='true' />
 		<checkbox-setting text='Enable Remap' value='remap-enabled' apply-on-change='true' />
 		<horizontal active='~remap-enabled'>
 			<vertical>

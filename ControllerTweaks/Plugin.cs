@@ -33,6 +33,7 @@ namespace ControllerTweaks
             zenjector.OnApp<ControllerTweaksApplicationInstaller>();
             zenjector.OnMenu<ControllerTweaksMenuInstaller>();
             zenjector.OnGame<ControllerTweaksGameInstaller>();
+            zenjector.OnGame<ControllerTweaksStandardInstaller>().OnlyForStandard();
         }
 
         #region BSIPA Config

@@ -10,6 +10,7 @@ namespace ControllerTweaks.Installers
             Container.BindInterfacesTo<ModifierViewController>().AsSingle();
             Container.BindInterfacesAndSelfTo<ControllerOffsetModifierViewController>().AsSingle();
             Container.BindInterfacesAndSelfTo<ControllerOffsetPresetsModalController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<ControllerOffsetSettingsModalController>().AsSingle();
             Container.BindInterfacesTo<SettingsViewController>().AsSingle();
             Container.BindInterfacesTo<PauseRemapViewController>().AsSingle();
             Container.BindInterfacesTo<LeftSelectRemapViewController>().AsSingle();

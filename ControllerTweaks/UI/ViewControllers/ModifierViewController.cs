@@ -82,7 +82,7 @@ namespace ControllerTweaks.UI
         [UIValue("controller-offset-enabled")]
         private bool ControllerOffsetEnabled
         {
-            get => PluginConfig.Instance.ControllerSwapEnabled;
+            get => PluginConfig.Instance.ShowControllerOffsetInPracticeMode;
             set
             {
                 PluginConfig.Instance.ShowControllerOffsetInPracticeMode = value;

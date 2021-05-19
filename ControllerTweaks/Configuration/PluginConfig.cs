@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using ControllerTweaks.UI;
 using IPA.Config.Stores;
 using IPA.Config.Stores.Attributes;
 using IPA.Config.Stores.Converters;
@@ -27,10 +28,12 @@ namespace ControllerTweaks.Configuration
         public virtual List<OVRInput.Button> RightSelectButtons { get; set; } = new List<OVRInput.Button>();
         public virtual bool RightSelectRemapEnabled { get; set; } = false;
 
-        [UseConverter(typeof(DictionaryConverter<OffsetPreset>))]
+        [UseConverter(typeof(DictionaryConverter<ControllerOffset>))]
         [NonNullable]
-        public virtual Dictionary<string, OffsetPreset> OffsetPresets { get; set; } = new Dictionary<string, OffsetPreset>();
+        public virtual Dictionary<string, ControllerOffset> OffsetPresets { get; set; } = new Dictionary<string, ControllerOffset>();
         public virtual bool ShowControllerOffsetInPracticeMode { get; set; } = false;
+        public virtual ControllerOffsetPauseViewController.ScreenPosition ScreenPosition { get; set; } = ControllerOffsetPauseViewController.ScreenPosition.Top;
+        public virtual bool OffsetApplyDelayEnabled { get; set; } = false;
 
         /// <summary>
         /// This is called whenever BSIPA reads the config from disk (including when file changes are detected).
