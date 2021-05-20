@@ -2,7 +2,7 @@
 	<modal id='modal' show-event='open-modal' hide-event='close-modal' clickerino-offerino-closerino="true" anchor-pos-y='20' size-delta-x='65' size-delta-y='45' move-to-center='false'>
 		<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize' anchor-pos-x='-10' anchor-pos-y='3' size-delta-y='0'>
 			<page-button event-click='list#PageUp' direction='Up' ignore-layout='true' anchor-min-y='0.8' anchor-pos-x='35' anchor-pos-y='-6' pref-width='12' active='~scroll-buttons-enabled' />
-			<list id='list' pref-height='30' select-cell='select-cell' list-style='List' />
+			<list id='list' pref-height='30' pref-width='62' select-cell='select-cell' list-style='List' />
 			<page-button event-click='list#PageDown' direction='Down' ignore-layout='true' anchor-min-y='-0.8' anchor-pos-x='35' anchor-pos-y='-8' pref-width='12' active='~scroll-buttons-enabled' />
 		</vertical>
 		<button text='+' click-event='open-keyboard' anchor-pos-x ='5' anchor-pos-y='-40.5' active='~add-button-active' />

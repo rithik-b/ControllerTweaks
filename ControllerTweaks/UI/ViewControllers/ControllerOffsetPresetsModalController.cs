@@ -143,13 +143,14 @@ namespace ControllerTweaks.UI
         [UIAction("create-preset")]
         private void CreatePreset(string presetName)
         {
-            if (!PluginConfig.Instance.OffsetPresets.ContainsKey(presetName))
+            if (presetName != "" && !PluginConfig.Instance.OffsetPresets.ContainsKey(presetName))
             {
                 ControllerOffset newPreset = new ControllerOffset();
                 PluginConfig.Instance.OffsetPresets.Add(presetName, newPreset);
                 customListTableData.data.Add(new CustomListTableData.CustomCellInfo(presetName, newPreset.ToString()));
                 customListTableData.tableView.ScrollToCellWithIdx(customListTableData.data.Count, TableView.ScrollPositionType.End, true);
                 customListTableData.tableView.ReloadData();
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ScrollButtonsEnabled)));
             }
         }
 
@@ -202,7 +203,7 @@ namespace ControllerTweaks.UI
         [UIValue("scroll-buttons-enabled")]
         private bool ScrollButtonsEnabled
         {
-            get => customListTableData != null && customListTableData.data.Count > 4;
+            get => customListTableData != null && customListTableData.data.Count >= 4;
         }
 
         [UIValue("add-button-active")]

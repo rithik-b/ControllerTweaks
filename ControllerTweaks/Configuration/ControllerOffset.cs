@@ -16,12 +16,6 @@
 
         public ControllerOffset()
         {
-            positionX = 0;
-            positionY = 0;
-            positionZ = 0;
-            rotationX = 0;
-            rotationY = 0;
-            rotationZ = 0;
         }
 
         public ControllerOffset(Vector3SO positionOffset, Vector3SO rotationOffset)
