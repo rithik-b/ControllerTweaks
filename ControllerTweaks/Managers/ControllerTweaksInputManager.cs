@@ -55,18 +55,22 @@ namespace ControllerTweaks.Managers
             if (vrPlatformHelper.vrPlatformSDK == VRPlatformSDK.Oculus)
             {
                 Plugin.harmony.Unpatch(VRControllersInputManager_MenuButtonDown.baseMethodInfo, HarmonyLib.HarmonyPatchType.Transpiler, Plugin.HarmonyId);
+                Plugin.harmony.Unpatch(VRControllersInputManager_MenuButton.baseMethodInfo, HarmonyLib.HarmonyPatchType.Transpiler, Plugin.HarmonyId);
                 Plugin.harmony.Unpatch(VRControllersInputManager_TriggerValue.baseMethodInfo, HarmonyLib.HarmonyPatchType.Transpiler, Plugin.HarmonyId);
+
                 if (PluginConfig.Instance.PauseRemapEnabled && !Plugin.harmony.GetPatchedMethods().Contains(VRControllersInputManager_MenuButtonDown.baseMethodInfo))
                 {
                     Plugin.harmony.Patch(VRControllersInputManager_MenuButtonDown.baseMethodInfo, transpiler: VRControllersInputManager_MenuButtonDown.transpilerMethod);
                 }
 
+                if (PluginConfig.Instance.PauseRemapEnabled && !Plugin.harmony.GetPatchedMethods().Contains(VRControllersInputManager_MenuButton.baseMethodInfo))
+                {
+                    Plugin.harmony.Patch(VRControllersInputManager_MenuButton.baseMethodInfo, transpiler: VRControllersInputManager_MenuButton.transpilerMethod);
+                }
+
                 if ((PluginConfig.Instance.LeftSelectRemapEnabled || PluginConfig.Instance.RightSelectRemapEnabled) && !Plugin.harmony.GetPatchedMethods().Contains(VRControllersInputManager_TriggerValue.baseMethodInfo))
                 {
                     Plugin.harmony.Patch(VRControllersInputManager_TriggerValue.baseMethodInfo, transpiler: VRControllersInputManager_TriggerValue.transpilerMethod);
-                }
-                else
-                {
                 }
             }
         }
