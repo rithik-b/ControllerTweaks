@@ -143,6 +143,7 @@
     <Compile Include="HarmonyPatches\ObstacleSaberSparkleEffectManager_Update.cs" />
     <Compile Include="HarmonyPatches\MultiplayerLocalActivePlayerGameplayManager_Start.cs" />
     <Compile Include="HarmonyPatches\SaberTypeExtensions_Node.cs" />
+    <Compile Include="HarmonyPatches\VRControllersInputManager_MenuButton.cs" />
     <Compile Include="HarmonyPatches\VRControllersInputManager_MenuButtonDown.cs" />
     <Compile Include="HarmonyPatches\VRControllersInputManager_TriggerValue.cs" />
     <Compile Include="Installers\ControllerTweaksApplicationInstaller.cs" />

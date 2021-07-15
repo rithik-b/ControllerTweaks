@@ -8,11 +8,11 @@ using System.Reflection.Emit;
 namespace ControllerTweaks.HarmonyPatches
 {
     [HarmonyPatch(typeof(VRControllersInputManager))]
-    [HarmonyPatch("MenuButtonDown", MethodType.Normal)]
-    public class VRControllersInputManager_MenuButtonDown
+    [HarmonyPatch("MenuButton", MethodType.Normal)]
+    public class VRControllersInputManager_MenuButton
     {
         private static readonly MethodInfo transpilerMethodInfo = SymbolExtensions.GetMethodInfo((IEnumerable<CodeInstruction> instructions) => Transpiler(instructions));
-        internal static readonly MethodInfo baseMethodInfo = typeof(VRControllersInputManager).GetMethod("MenuButtonDown");
+        internal static readonly MethodInfo baseMethodInfo = typeof(VRControllersInputManager).GetMethod("MenuButton");
         internal static readonly HarmonyMethod transpilerMethod = new HarmonyMethod(transpilerMethodInfo);
 
         internal static readonly MethodInfo getCustomInput = SymbolExtensions.GetMethodInfo(() => GetCustomInput());
@@ -24,7 +24,7 @@ namespace ControllerTweaks.HarmonyPatches
             int index = -1;
             for (int i = 0; i < codes.Count - 1; i++)
             {
-                if (codes[i].opcode == OpCodes.Ldstr && codes[i].operand?.ToString() == "MenuButtonOculusTouch" && codes[i+1].opcode == OpCodes.Call)
+                if (codes[i].opcode == OpCodes.Ldstr && codes[i].operand?.ToString() == "MenuButtonOculusTouch" && codes[i + 1].opcode == OpCodes.Call)
                 {
                     index = i;
                     break;
@@ -54,7 +54,7 @@ namespace ControllerTweaks.HarmonyPatches
             bool pressed = false;
             foreach (var button in PluginConfig.Instance.PauseButtons)
             {
-                pressed = pressed || OVRInput.GetDown(button, OVRInput.Controller.Touch);
+                pressed = pressed || OVRInput.Get(button, OVRInput.Controller.Touch);
             }
             return pressed;
         }

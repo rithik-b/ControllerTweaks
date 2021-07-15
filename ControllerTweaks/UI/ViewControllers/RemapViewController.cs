@@ -167,7 +167,7 @@ namespace ControllerTweaks.UI
                 {
                     return "<color=red>Remap only works for Oculus VR.\nFor SteamVR, use SteamVR's built in button remapper.</color>";
                 }
-                else if (VRControllersInputManager_MenuButtonDown.failedPatch || VRControllersInputManager_TriggerValue.failedPatch)
+                else if (VRControllersInputManager_MenuButtonDown.failedPatch || VRControllersInputManager_MenuButton.failedPatch || VRControllersInputManager_TriggerValue.failedPatch)
                 {
                     return "<color=red>Remap patch failed.\nPlease check for updates for this mod or contact #pc-help in BSMG.</color>";
                 }
