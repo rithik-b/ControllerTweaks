@@ -1,3 +1,7 @@
 ﻿<bg id='root-transform' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-	<text-segments contents='settings-subviews' select-cell='settings-subview-selected' anchor-pos-y='40' />
+	<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize' pref-width='80' pref-height='5' anchor-pos-y='40'>
+		<bg bg='panel-top'>
+			<text-segments contents='settings-subviews' select-cell='settings-subview-selected' />
+		</bg>
+	</vertical>
 </bg>

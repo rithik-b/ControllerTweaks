@@ -138,6 +138,7 @@ namespace ControllerTweaks.UI
             {
                 _remapEnabledToggle = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RemapEnabledToggle)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WarningText)));
             }
         }
 
@@ -153,28 +154,25 @@ namespace ControllerTweaks.UI
                 {
                     return "<color=red>Remap only works for Oculus VR.\nFor SteamVR, use SteamVR's built in button remapper.</color>";
                 }
-                else if (VRControllersInputManager_MenuButtonDown.failedPatch || VRControllersInputManager_MenuButton.failedPatch || VRControllersInputManager_TriggerValue.failedPatch)
+                if (VRControllersInputManager_MenuButtonDown.failedPatch || VRControllersInputManager_MenuButton.failedPatch || VRControllersInputManager_TriggerValue.failedPatch)
                 {
                     return "<color=red>Remap patch failed.\nPlease check for updates for this mod or contact #pc-help in BSMG.</color>";
                 }
-                else if (buttonList?.data.Count == 0)
+                if (RemapEnabledToggle && buttonList?.data.Count == 0)
                 {
                     return "Make sure you click \"+\" to bind a button.";
                 }
-                else
-                {
-                    return "";
-                }
+                return "";
             }
         }
 
-        #endregion
+#endregion
 
-        #region Abstract
+#region Abstract
 
         protected abstract bool ButtonRemapEnabled { get; set; }
         protected abstract List<OVRInput.Button> Buttons { get; }
 
-        #endregion
+#endregion
     }
 }
