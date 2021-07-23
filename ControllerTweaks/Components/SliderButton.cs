@@ -1,10 +1,5 @@
 ﻿using BeatSaberMarkupLanguage.Components.Settings;
 using HMUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,14 +15,14 @@ namespace ControllerTweaks.Components
         {
             leftButton.gameObject.SetActive(true);
             leftButton.SetParent(slider.transform.Find("BSMLSlider"));
-            leftButton.localPosition = new Vector3(-41, -1.03f, 0);
+            leftButton.localPosition = new Vector3(-41.5f, 0, 0);
             leftButton.localScale = new Vector3(0.5f, 1, 1);
             SliderButton sliderButton = leftButton.gameObject.AddComponent<SliderButton>();
             sliderButton.Setup(slider, -step);
 
             rightButton.gameObject.SetActive(true);
             rightButton.SetParent(slider.transform.Find("BSMLSlider"));
-            rightButton.localPosition = new Vector3(1, -1.03f, 0);
+            rightButton.localPosition = new Vector3(1.5f, 0, 0);
             rightButton.localScale = new Vector3(0.5f, 1, 1);
             sliderButton = rightButton.gameObject.AddComponent<SliderButton>();
             sliderButton.Setup(slider, step);
@@ -58,6 +53,5 @@ namespace ControllerTweaks.Components
                 slider.slider.HandleNormalizedValueDidChange(slider.slider, slider.slider.NormalizeValue(slider.slider.value));
             }
         }
-
     }
 }

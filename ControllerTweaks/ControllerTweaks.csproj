@@ -1,45 +1,27 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8C1B5745-46F2-46F1-8E57-3AB425046D1B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ControllerTweaks</RootNamespace>
-    <AssemblyName>ControllerTweaks</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>portable</DebugType>
-    <LocalRefsDir Condition="Exists('..\Refs')">..\Refs</LocalRefsDir>
-    <BeatSaberDir>$(LocalRefsDir)</BeatSaberDir>
-    <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
-    <!--<PathMap>$(AppOutputBase)=X:\$(AssemblyName)\</PathMap>-->
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(DefineConstants.Contains('CIBuild')) OR '$(NCrunch)' == '1'">
-    <DisableCopyToPlugins>True</DisableCopyToPlugins>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(NCrunch)' == '1'">
-    <DisableCopyToPlugins>True</DisableCopyToPlugins>
-    <DisableZipRelease>True</DisableZipRelease>
-  </PropertyGroup>
-  <ItemGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <OutputType>Library</OutputType>
+        <LangVersion>8</LangVersion>
+        <Nullable>disable</Nullable>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <LocalRefsDir Condition="Exists('..\Refs')">..\Refs</LocalRefsDir>
+        <BeatSaberDir>$(LocalRefsDir)</BeatSaberDir>
+        <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
+        <DebugType>portable</DebugType>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$(DefineConstants.Contains('CIBuild')) OR '$(NCrunch)' == '1'">
+        <DisableCopyToPlugins>True</DisableCopyToPlugins>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(NCrunch)' == '1'">
+        <DisableCopyToPlugins>True</DisableCopyToPlugins>
+        <DisableZipRelease>True</DisableZipRelease>
+    </PropertyGroup>
+
+    <ItemGroup>
     <Reference Include="0Harmony, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <Private>False</Private>
       <HintPath>$(BeatSaberDir)\Libs\0Harmony.dll</HintPath>
@@ -136,62 +118,23 @@
       <SpecificVersion>False</SpecificVersion>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Components\SliderButton.cs" />
-    <Compile Include="Configuration\ControllerOffset.cs" />
-    <Compile Include="ControllerSwapper.cs" />
-    <Compile Include="HarmonyPatches\ObstacleSaberSparkleEffectManager_Update.cs" />
-    <Compile Include="HarmonyPatches\MultiplayerLocalActivePlayerGameplayManager_Start.cs" />
-    <Compile Include="HarmonyPatches\SaberTypeExtensions_Node.cs" />
-    <Compile Include="HarmonyPatches\VRControllersInputManager_MenuButtonDown.cs" />
-    <Compile Include="HarmonyPatches\VRControllersInputManager_TriggerValue.cs" />
-    <Compile Include="Installers\ControllerTweaksApplicationInstaller.cs" />
-    <Compile Include="Installers\ControllerTweaksStandardInstaller.cs" />
-    <Compile Include="Managers\ControllerTweaksInputManager.cs" />
-    <Compile Include="Installers\ControllerTweaksGameInstaller.cs" />
-    <Compile Include="Installers\ControllerTweaksMenuInstaller.cs" />
-    <Compile Include="Plugin.cs" />
-    <Compile Include="Configuration\PluginConfig.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\ViewControllers\ControllerOffsetModifierViewController.cs" />
-    <Compile Include="UI\ViewControllers\ControllerOffsetPauseViewController.cs" />
-    <Compile Include="Interfaces\ISettingsSubViewController.cs" />
-    <Compile Include="UI\ViewControllers\ControllerOffsetPresetsModalController.cs" />
-    <Compile Include="UI\ViewControllers\ControllerOffsetSettingsModalController.cs" />
-    <Compile Include="UI\ViewControllers\ControllerOffsetViewController.cs" />
-    <Compile Include="UI\ViewControllers\LeftSelectRemapViewController.cs" />
-    <Compile Include="UI\ViewControllers\ModifierViewController.cs" />
-    <Compile Include="UI\ViewControllers\PauseRemapViewController.cs" />
-    <Compile Include="UI\ViewControllers\RemapViewController.cs" />
-    <Compile Include="UI\ViewControllers\RightSelectRemapViewController.cs" />
-    <Compile Include="UI\ViewControllers\SettingsViewController.cs" />
-    <Compile Include="Utilities\Accessors.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="manifest.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
-    <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')" />
-    <None Include="ControllerTweaks.csproj.user" Condition="Exists('ControllerTweaks.csproj.user')" />
-    <EmbeddedResource Include="UI\Views\ModifierView.bsml" />
-    <EmbeddedResource Include="UI\Views\SettingsView.bsml" />
-    <EmbeddedResource Include="UI\Views\ControllerOffsetView.bsml" />
-    <EmbeddedResource Include="UI\Views\RemapView.bsml" />
-    <EmbeddedResource Include="UI\Views\ControllerOffsetPresetModal.bsml" />
-    <EmbeddedResource Include="UI\Views\ControllerOffsetSettingsModal.bsml" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="BeatSaberModdingTools.Tasks">
-      <Version>1.2.3</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <EmbeddedResource Include="Images\ElectroCute.png" />
-    <EmbeddedResource Include="Images\ElectroMint_uncropped.png" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+    <ItemGroup>
+        <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
+        <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')" />
+        <None Include="ControllerTweaks.csproj.user" Condition="Exists('ControllerTweaks.csproj.user')" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="manifest.json" />
+        <EmbeddedResource Include="Images\*.png" />
+        <EmbeddedResource Include="UI\Views\*.bsml" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BeatSaberModdingTools.Tasks" Version="1.4.3">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
 </Project>

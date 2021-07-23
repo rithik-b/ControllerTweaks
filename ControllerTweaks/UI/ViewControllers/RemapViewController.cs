@@ -5,6 +5,7 @@ using ControllerTweaks.HarmonyPatches;
 using ControllerTweaks.Interfaces;
 using ControllerTweaks.Managers;
 using HMUI;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
@@ -13,25 +14,26 @@ using Zenject;
 
 namespace ControllerTweaks.UI
 {
-    public abstract class RemapViewController : IInitializable, ISettingsSubviewController, INotifyPropertyChanged
+    public abstract class RemapViewController : IInitializable, IDisposable, ISettingsSubviewController, INotifyPropertyChanged
     {
+        private ButtonSelectionModalController buttonSelectionModalController;
         private IVRPlatformHelper vrPlatformHelper;
         private bool _remapEnabledToggle;
 
         protected int selectedButtonTableIndex = -1;
-        protected string buttonToAdd = "Start";
         private bool parsed;
 
         [UIComponent("button-list")]
-        public CustomListTableData buttonList;
+        protected CustomListTableData buttonList;
 
         [UIComponent("root-transform")]
         protected RectTransform rootTransform;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public RemapViewController(IVRPlatformHelper vrPlatformHelper)
+        public RemapViewController(ButtonSelectionModalController buttonSelectionModalController, IVRPlatformHelper vrPlatformHelper)
         {
+            this.buttonSelectionModalController = buttonSelectionModalController;
             this.vrPlatformHelper = vrPlatformHelper;
         }
 
@@ -39,6 +41,13 @@ namespace ControllerTweaks.UI
         {
             parsed = false;
             _remapEnabledToggle = ButtonRemapEnabled;
+
+            buttonSelectionModalController.AddButtonClickedEvent += ButtonSelectionModalController_AddButtonClickedEvent;
+        }
+
+        public void Dispose()
+        {
+            buttonSelectionModalController.AddButtonClickedEvent -= ButtonSelectionModalController_AddButtonClickedEvent;
         }
 
         public void Activate(RectTransform parentTransform)
@@ -68,6 +77,16 @@ namespace ControllerTweaks.UI
             }
         }
 
+        private void ButtonSelectionModalController_AddButtonClickedEvent(string buttonToAdd, Type callingType)
+        {
+            if (parsed && callingType == GetType())
+            {
+                buttonList.data.Add(new CustomListTableData.CustomCellInfo(buttonToAdd));
+                buttonList.tableView.ReloadData();
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WarningText)));
+            }
+        }
+
         #region Actions
 
         [UIAction("#post-parse")]
@@ -80,19 +99,12 @@ namespace ControllerTweaks.UI
                 buttonList.data.Add(new CustomListTableData.CustomCellInfo(ControllerTweaksInputManager.ButtonToName[button]));
             }
             buttonList.tableView.ReloadData();
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AddButtonInteractable)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WarningText)));
             Deactivate();
         }
 
         [UIAction("add-button-clicked")]
-        protected void AddButtonClicked()
-        {
-            buttonList.data.Add(new CustomListTableData.CustomCellInfo(buttonToAdd));
-            buttonList.tableView.ReloadData();
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AddButtonInteractable)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WarningText)));
-        }
+        protected void AddButtonClicked() => buttonSelectionModalController.ShowModal(rootTransform, GetType(), buttonList.data);
 
         [UIAction("remove-button-clicked")]
         protected void RemoveButtonClicked()
@@ -103,7 +115,6 @@ namespace ControllerTweaks.UI
                 buttonList.data.RemoveAt(selectedButtonTableIndex);
                 buttonList.tableView.ReloadData();
                 selectedButtonTableIndex = -1;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AddButtonInteractable)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RemoveButtonInteractable)));
             }
         }
@@ -113,13 +124,6 @@ namespace ControllerTweaks.UI
         {
             this.selectedButtonTableIndex = selectedButtonTableIndex;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RemoveButtonInteractable)));
-        }
-
-        [UIAction("button-to-add-changed")]
-        protected void ButtonToAddChanged(string buttonToAdd)
-        {
-            this.buttonToAdd = buttonToAdd;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AddButtonInteractable)));
         }
 
         #endregion
@@ -134,26 +138,9 @@ namespace ControllerTweaks.UI
             {
                 _remapEnabledToggle = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RemapEnabledToggle)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WarningText)));
             }
         }
-
-        [UIValue("button-options")]
-        protected readonly List<object> buttonOptions = new List<object>{
-            "Start",
-            "Left Stick",
-            "Right Stick",
-            "Left Trigger",
-            "Right Trigger",
-            "Left Grip",
-            "Right Grip",
-            "A",
-            "B",
-            "X",
-            "Y"
-        };
-
-        [UIValue("add-button-interactable")]
-        protected bool AddButtonInteractable => buttonList == null ? true : !buttonList.data.Exists(data => data.text == buttonToAdd);
 
         [UIValue("remove-button-interactable")]
         protected bool RemoveButtonInteractable => selectedButtonTableIndex != -1;
@@ -167,28 +154,25 @@ namespace ControllerTweaks.UI
                 {
                     return "<color=red>Remap only works for Oculus VR.\nFor SteamVR, use SteamVR's built in button remapper.</color>";
                 }
-                else if (VRControllersInputManager_MenuButtonDown.failedPatch || VRControllersInputManager_TriggerValue.failedPatch)
+                if (VRControllersInputManager_MenuButtonDown.failedPatch || VRControllersInputManager_MenuButton.failedPatch || VRControllersInputManager_TriggerValue.failedPatch)
                 {
                     return "<color=red>Remap patch failed.\nPlease check for updates for this mod or contact #pc-help in BSMG.</color>";
                 }
-                else if (buttonList?.data.Count == 0)
+                if (RemapEnabledToggle && buttonList?.data.Count == 0)
                 {
                     return "Make sure you click \"+\" to bind a button.";
                 }
-                else
-                {
-                    return "";
-                }
+                return "";
             }
         }
 
-        #endregion
+#endregion
 
-        #region Abstract
+#region Abstract
 
         protected abstract bool ButtonRemapEnabled { get; set; }
         protected abstract List<OVRInput.Button> Buttons { get; }
 
-        #endregion
+#endregion
     }
 }

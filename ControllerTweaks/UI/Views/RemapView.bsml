@@ -2,19 +2,14 @@
 	<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
 		<text text='~warning-text' rich-text='true' />
 		<checkbox-setting text='Enable Remap' value='remap-enabled' apply-on-change='true' />
-		<horizontal active='~remap-enabled'>
-			<vertical>
-				<dropdown-list-setting text='' on-change='button-to-add-changed' options='button-options' ignore-layout='true' anchor-pos-x='20' />
-				<horizontal>
-					<button text='+' interactable='~add-button-interactable' on-click='add-button-clicked' />
-					<button text='-' interactable='~remove-button-interactable' on-click='remove-button-clicked' />
-				</horizontal>
-			</vertical>
-			<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
-				<page-button event-click='button-list#PageUp' direction='Up'></page-button>
-				<list id='button-list' pref-height='20' select-cell='select-button-list' list-style='List'></list>
-				<page-button event-click='button-list#PageDown' direction='Down'></page-button>
-			</vertical>
-		</horizontal>
+		<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize' active='~remap-enabled'>
+			<page-button event-click='button-list#PageUp' direction='Up' />
+			<list id='button-list' pref-height='18' select-cell='select-button-list' list-style='List' />
+			<page-button event-click='button-list#PageDown' direction='Down' />
+			<horizontal spacing='0' horizontal-fit='PreferredSize'>
+				<button text='+' on-click='add-button-clicked' />
+				<button text='-' interactable='~remove-button-interactable' on-click='remove-button-clicked' />
+			</horizontal>
+		</vertical>
 	</vertical>
 </bg>

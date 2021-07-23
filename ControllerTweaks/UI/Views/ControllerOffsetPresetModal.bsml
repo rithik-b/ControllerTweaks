@@ -1,15 +1,15 @@
 ﻿<bg id='root' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-	<modal id='modal' show-event='open-modal' hide-event='close-modal' clickerino-offerino-closerino="true" anchor-pos-y='20' size-delta-x='65' size-delta-y='45' move-to-center='false'>
-		<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize' anchor-pos-x='-10' anchor-pos-y='3' size-delta-y='0'>
-			<page-button event-click='list#PageUp' direction='Up' ignore-layout='true' anchor-min-y='0.8' anchor-pos-x='35' anchor-pos-y='-6' pref-width='12' active='~scroll-buttons-enabled' />
+	<modal id='modal' show-event='open-modal' hide-event='close-modal' clickerino-offerino-closerino='true' anchor-pos-y='20' size-delta-x='70' size-delta-y='45' move-to-center='false'>
+		<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize' anchor-pos-x='-10' anchor-pos-y='3'>
+			<page-button event-click='list#PageUp' direction='Up' ignore-layout='true' anchor-min-y='0.8' anchor-pos-x='38' anchor-pos-y='-6' pref-width='12' active='~scroll-buttons-enabled' />
 			<list id='list' pref-height='30' pref-width='62' select-cell='select-cell' list-style='List' />
-			<page-button event-click='list#PageDown' direction='Down' ignore-layout='true' anchor-min-y='-0.8' anchor-pos-x='35' anchor-pos-y='-8' pref-width='12' active='~scroll-buttons-enabled' />
+			<page-button event-click='list#PageDown' direction='Down' ignore-layout='true' anchor-min-y='-0.8' anchor-pos-x='38' anchor-pos-y='-8' pref-width='12' active='~scroll-buttons-enabled' />
 		</vertical>
 		<button text='+' click-event='open-keyboard' anchor-pos-x ='5' anchor-pos-y='-40.5' active='~add-button-active' />
 		<modal-keyboard id='keyboard' show-event='open-keyboard' on-enter='create-preset' />
 		<button text='Load' on-click='load-preset' anchor-pos-x ='15' anchor-pos-y='-40.5' interactable='~modify-buttons-enabled' />
 		<button text='Save' on-click='save-preset' anchor-pos-x ='27.5' anchor-pos-y='-40.5' interactable='~modify-buttons-enabled' />
 		<button text='Delete' on-click='delete-preset' anchor-pos-x ='41.5' anchor-pos-y='-40.5' interactable='~modify-buttons-enabled' />
-		<button text='x' click-event='close-modal' anchor-pos-x ='60' anchor-pos-y='-5' />
+		<button text='x' click-event='close-modal' anchor-pos-x ='65' anchor-pos-y='-5' />
 	</modal>
 </bg>

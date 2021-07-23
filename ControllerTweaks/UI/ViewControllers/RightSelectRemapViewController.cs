@@ -15,7 +15,7 @@ namespace ControllerTweaks.UI
 
         protected override List<OVRInput.Button> Buttons => PluginConfig.Instance.RightSelectButtons;
 
-        public RightSelectRemapViewController(IVRPlatformHelper vrPlatformHelper) : base(vrPlatformHelper)
+        public RightSelectRemapViewController(ButtonSelectionModalController buttonSelectionModalController, IVRPlatformHelper vrPlatformHelper) : base(buttonSelectionModalController, vrPlatformHelper)
         {
         }
     }

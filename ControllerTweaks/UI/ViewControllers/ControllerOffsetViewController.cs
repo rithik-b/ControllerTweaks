@@ -149,6 +149,9 @@ namespace ControllerTweaks.UI
             controllerOffsetSettingsModalController.ShowModal(showSettingsButton);
         }
 
+        [UIValue("bg-active")]
+        protected bool IsPauseController => this is ControllerOffsetPauseViewController;
+
         [UIValue("back-button-active")]
         protected bool IsModifierController => this is ControllerOffsetModifierViewController;
 

@@ -15,7 +15,7 @@ namespace ControllerTweaks.UI
 
         protected override List<OVRInput.Button> Buttons => PluginConfig.Instance.PauseButtons;
 
-        public PauseRemapViewController(IVRPlatformHelper vrPlatformHelper) : base(vrPlatformHelper)
+        public PauseRemapViewController(ButtonSelectionModalController buttonSelectionModalController, IVRPlatformHelper vrPlatformHelper) : base(buttonSelectionModalController, vrPlatformHelper)
         {
         }
     }
