@@ -154,6 +154,7 @@
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\ViewControllers\ButtonSelectionModalController.cs" />
     <Compile Include="UI\ViewControllers\ControllerOffsetModifierViewController.cs" />
     <Compile Include="UI\ViewControllers\ControllerOffsetPauseViewController.cs" />
     <Compile Include="Interfaces\ISettingsSubViewController.cs" />
@@ -181,6 +182,7 @@
     <EmbeddedResource Include="UI\Views\RemapView.bsml" />
     <EmbeddedResource Include="UI\Views\ControllerOffsetPresetModal.bsml" />
     <EmbeddedResource Include="UI\Views\ControllerOffsetSettingsModal.bsml" />
+    <EmbeddedResource Include="UI\Views\ButtonSelectionModal.bsml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">
