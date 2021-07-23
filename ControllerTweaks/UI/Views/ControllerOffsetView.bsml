@@ -1,13 +1,16 @@
 ﻿<bg id='root' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-	<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize' anchor-pos-x='5' preferred-height='45' preferred-width='100'>
+	<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize' preferred-height='45' preferred-width='115' active='~bg-active'>
+		<bg bg='round-rect-panel' />
+	</vertical>
+	<vertical anchor-pos-x='-2' horizontal-fit='PreferredSize' vertical-fit='PreferredSize' preferred-height='45' preferred-width='105'>
 		<horizontal spacing='5'>
-			<vertical preferred-width='45' preferred-height='35'>
+			<vertical preferred-width='50'>
 				<text text='Position' />
 				<slider-setting id='position-x-slider' text='X' value='position-x' min='-10' max='10' increment='0.1' apply-on-change='true' bind-value='true' />
 				<slider-setting id='position-y-slider' text='Y' value='position-y' min='-10' max='10' increment='0.1' apply-on-change='true' bind-value='true' />
 				<slider-setting id='position-z-slider' text='Z' value='position-z' min='-10' max='10' increment='0.1' apply-on-change='true' bind-value='true' />
 			</vertical>
-			<vertical preferred-width='45' preferred-height='35'>
+			<vertical preferred-width='50'>
 				<text text='Rotation' />
 				<slider-setting id='rotation-x-slider' text='X' value='rotation-x' min='-180' max='180' increment='1' apply-on-change='true' bind-value='true' />
 				<slider-setting id='rotation-y-slider' text='Y' value='rotation-y' min='-180' max='180' increment='1' apply-on-change='true' bind-value='true' />

@@ -78,10 +78,10 @@ namespace ControllerTweaks.UI
             switch (PluginConfig.Instance.ScreenPosition)
             {
                 case ScreenPosition.Top:
-                    floatingScreen.transform.localPosition = new Vector3(0, 35, 0);
+                    floatingScreen.transform.localPosition = new Vector3(0, 40, 0);
                     break;
                 case ScreenPosition.Bottom:
-                    floatingScreen.transform.localPosition = new Vector3(0, -38, 0);
+                    floatingScreen.transform.localPosition = new Vector3(-5, -40, 0);
                     break;
             }
         }
