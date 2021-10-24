@@ -41,7 +41,7 @@ namespace ControllerTweaks.UI
             if (practiceMode)
             {
                 base.Initialize();
-                floatingScreen = FloatingScreen.CreateFloatingScreen(new Vector2(115, 55), false, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0), curvatureRadius: 150);
+                floatingScreen = FloatingScreen.CreateFloatingScreen(new Vector2(120, 55), false, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0), curvatureRadius: 150);
                 floatingScreen.transform.SetParent(pauseMenuManager.transform.Find("Wrapper").Find("MenuWrapper").Find("Canvas").Find("MainBar"));
                 UpdateScreenPosition();
                 BSMLParser.instance.Parse(BeatSaberMarkupLanguage.Utilities.GetResourceContent(Assembly.GetExecutingAssembly(), "ControllerTweaks.UI.Views.ControllerOffsetView.bsml"), floatingScreen.gameObject, this);
