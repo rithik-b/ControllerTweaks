@@ -29,11 +29,10 @@ namespace ControllerTweaks
         {
             Instance = this;
             Plugin.Log = logger;
-            Plugin.Log?.Debug("Logger initialized.");
-            zenjector.OnApp<ControllerTweaksApplicationInstaller>();
-            zenjector.OnMenu<ControllerTweaksMenuInstaller>();
-            zenjector.OnGame<ControllerTweaksGameInstaller>();
-            zenjector.OnGame<ControllerTweaksStandardInstaller>().OnlyForStandard();
+            zenjector.Install<ControllerTweaksApplicationInstaller>(Location.App);
+            zenjector.Install<ControllerTweaksMenuInstaller>(Location.Menu);
+            zenjector.Install<ControllerTweaksGameInstaller>(Location.GameCore);
+            zenjector.Install<ControllerTweaksStandardInstaller>(Location.StandardPlayer);
         }
 
         #region BSIPA Config
