@@ -1,8 +1,6 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Settings;
-using ControllerTweaks.HarmonyPatches;
 using ControllerTweaks.Interfaces;
-using ControllerTweaks.Managers;
 using HMUI;
 using System;
 using System.Collections.Generic;
@@ -14,7 +12,6 @@ namespace ControllerTweaks.UI
 {
     public class SettingsViewController : IInitializable, IDisposable, INotifyPropertyChanged
     {
-        private ControllerTweaksInputManager controllerTweaksInputManager;
         private int currentSubviewIndex = 0;
 
         [UIValue("settings-subviews")]
@@ -25,10 +22,8 @@ namespace ControllerTweaks.UI
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public SettingsViewController(ControllerTweaksInputManager controllerTweaksInputManager, List<ISettingsSubviewController> settingsSubviewControllers)
+        public SettingsViewController(List<ISettingsSubviewController> settingsSubviewControllers)
         {
-            this.controllerTweaksInputManager = controllerTweaksInputManager;
-
             foreach (var subviewController in settingsSubviewControllers)
             {
                 this.settingsSubviewControllers.Add(subviewController);
@@ -66,8 +61,6 @@ namespace ControllerTweaks.UI
             {
                 ((ISettingsSubviewController)subviewController).ApplyChanges();
             }
-
-            controllerTweaksInputManager.UpdateInputPatches();
         }
     }
 }

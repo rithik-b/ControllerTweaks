@@ -1,40 +1,25 @@
 ﻿using ControllerTweaks.Configuration;
 using HarmonyLib;
+using SiraUtil.Affinity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace ControllerTweaks.HarmonyPatches
+namespace ControllerTweaks.AffinityPatches
 {
-    [HarmonyPatch(typeof(VRControllersInputManager))]
-    [HarmonyPatch("TriggerValue", MethodType.Normal)]
-    public class VRControllersInputManager_TriggerValue
+    internal class TriggerValuePatch
     {
-        private static readonly MethodInfo transpilerMethodInfo = SymbolExtensions.GetMethodInfo((IEnumerable<CodeInstruction> instructions) => Transpiler(instructions));
-        internal static readonly MethodBase baseMethodInfo = typeof(VRControllersInputManager).GetMethod("TriggerValue");
-        internal static readonly HarmonyMethod transpilerMethod = new HarmonyMethod(transpilerMethodInfo);
+        private static readonly MethodInfo getLeftInput = SymbolExtensions.GetMethodInfo(() => GetLeftInput());
+        private static readonly MethodInfo getRightInput = SymbolExtensions.GetMethodInfo(() => GetRightInput());
+        public bool failedPatch = false;
 
-        internal static readonly MethodInfo getLeftInput = SymbolExtensions.GetMethodInfo(() => GetLeftInput());
-        internal static readonly MethodInfo getRightInput = SymbolExtensions.GetMethodInfo(() => GetRightInput());
-        internal static bool failedPatch = false;
-
-        internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        [AffinityTranspiler]
+        [AffinityPatch(typeof(VRControllersInputManager), nameof(VRControllersInputManager.TriggerValue))]
+        private IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             failedPatch = false;
             List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
-
-            // Set remap to off if list is empty for safety reasons
-            if (PluginConfig.Instance.LeftSelectButtons.Count == 0)
-            {
-                PluginConfig.Instance.LeftSelectRemapEnabled = false;
-            }
-
-            if (PluginConfig.Instance.RightSelectButtons.Count == 0)
-            {
-                PluginConfig.Instance.RightSelectRemapEnabled = false;
-            }
-
             int index = -1;
 
             for (int i = 0; i < codes.Count - 1; i++)
@@ -46,14 +31,14 @@ namespace ControllerTweaks.HarmonyPatches
                 }
             }
 
-            if (index != -1 && PluginConfig.Instance.LeftSelectRemapEnabled)
+            if (index != -1)
             {
                 codes.RemoveAt(index);
                 codes.RemoveAt(index);
                 CodeInstruction newInstruction = new CodeInstruction(OpCodes.Call, getLeftInput);
                 codes.Insert(index, newInstruction);
             }
-            else if (index == -1)
+            else
             {
                 failedPatch = true;
                 Plugin.Log.Error("Select button remap patch failed.");
@@ -73,14 +58,14 @@ namespace ControllerTweaks.HarmonyPatches
                 }
             }
 
-            if (index != -1 && PluginConfig.Instance.RightSelectRemapEnabled)
+            if (index != -1)
             {
                 codes.RemoveAt(index);
                 codes.RemoveAt(index);
                 CodeInstruction newInstruction = new CodeInstruction(OpCodes.Call, getRightInput);
                 codes.Insert(index, newInstruction);
             }
-            else if (index == -1)
+            else
             {
                 failedPatch = true;
                 Plugin.Log.Error("Select button remap patch failed. Opcodes:");
@@ -93,7 +78,7 @@ namespace ControllerTweaks.HarmonyPatches
             return codes.AsEnumerable();
         }
 
-        internal static float GetLeftInput()
+        private static float GetLeftInput()
         {
             bool pressed = false;
             foreach (var button in PluginConfig.Instance.LeftSelectButtons)
@@ -103,7 +88,7 @@ namespace ControllerTweaks.HarmonyPatches
             return pressed ? 1 : 0;
         }
 
-        internal static float GetRightInput()
+        private static float GetRightInput()
         {
             bool pressed = false;
             foreach (var button in PluginConfig.Instance.RightSelectButtons)

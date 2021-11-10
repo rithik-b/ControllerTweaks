@@ -1,11 +1,11 @@
-﻿using ControllerTweaks.HarmonyPatches;
-using ControllerTweaks.Installers;
+﻿using ControllerTweaks.Installers;
 using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
 using SiraUtil.Zenject;
 using System;
 using System.Reflection;
+using UnityEngine.XR;
 using IPALogger = IPA.Logging.Logger;
 
 namespace ControllerTweaks
@@ -29,7 +29,12 @@ namespace ControllerTweaks
         {
             Instance = this;
             Plugin.Log = logger;
-            zenjector.Install<ControllerTweaksApplicationInstaller>(Location.App);
+
+            if (XRSettings.loadedDeviceName.Contains("oculus"))
+            {
+                zenjector.Install<ControllerTweaksRemapInstaller>(Location.App);
+            }
+
             zenjector.Install<ControllerTweaksMenuInstaller>(Location.Menu);
             zenjector.Install<ControllerTweaksGameInstaller>(Location.GameCore);
             zenjector.Install<ControllerTweaksStandardInstaller>(Location.StandardPlayer);
@@ -53,7 +58,6 @@ namespace ControllerTweaks
         [OnEnable]
         public void OnEnable()
         {
-            harmony.Patch(MultiplayerLocalActivePlayerGameplayManager_Start.baseMethodInfo, prefix: MultiplayerLocalActivePlayerGameplayManager_Start.prefixMethod);
         }
 
         /// <summary>

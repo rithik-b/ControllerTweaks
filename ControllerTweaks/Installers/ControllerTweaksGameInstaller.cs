@@ -1,6 +1,5 @@
 ﻿using ControllerTweaks.Configuration;
-using ControllerTweaks.HarmonyPatches;
-using System.Linq;
+using ControllerTweaks.AffinityPatches;
 using Zenject;
 
 namespace ControllerTweaks.Installers
@@ -12,17 +11,10 @@ namespace ControllerTweaks.Installers
             if (PluginConfig.Instance.ControllerSwapEnabled)
             {
                 Container.BindInterfacesTo<ControllerSwapper>().AsSingle();
-            }
-            else
-            {
-                if (Plugin.harmony.GetPatchedMethods().Contains(SaberTypeExtensions_Node.baseMethodInfo))
-                {
-                    Plugin.harmony.Unpatch(SaberTypeExtensions_Node.baseMethodInfo, HarmonyLib.HarmonyPatchType.Prefix, Plugin.HarmonyId);
-                }
-                if (Plugin.harmony.GetPatchedMethods().Contains(ObstacleSaberSparkleEffectManager_Update.baseMethodInfo))
-                {
-                    Plugin.harmony.Unpatch(ObstacleSaberSparkleEffectManager_Update.baseMethodInfo, HarmonyLib.HarmonyPatchType.Transpiler, Plugin.HarmonyId);
-                }
+
+                Container.BindInterfacesAndSelfTo<LocalActiveGameplayManagerStartPatch>().AsSingle();
+                Container.BindInterfacesTo<SaberTypePatch>().AsSingle();
+                Container.BindInterfacesTo<EffectManagerUpdatePatch>().AsSingle();
             }
         }
     }

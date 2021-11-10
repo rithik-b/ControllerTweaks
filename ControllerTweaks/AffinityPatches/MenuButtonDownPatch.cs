@@ -1,23 +1,21 @@
 ﻿using ControllerTweaks.Configuration;
 using HarmonyLib;
+using SiraUtil.Affinity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace ControllerTweaks.HarmonyPatches
+namespace ControllerTweaks.AffinityPatches
 {
-    [HarmonyPatch(typeof(VRControllersInputManager))]
-    [HarmonyPatch("MenuButton", MethodType.Normal)]
-    public class VRControllersInputManager_MenuButton
+    internal class MenuButtonDownPatch : IAffinity
     {
-        private static readonly MethodInfo transpilerMethodInfo = SymbolExtensions.GetMethodInfo((IEnumerable<CodeInstruction> instructions) => Transpiler(instructions));
-        internal static readonly MethodInfo baseMethodInfo = typeof(VRControllersInputManager).GetMethod("MenuButton");
-        internal static readonly HarmonyMethod transpilerMethod = new HarmonyMethod(transpilerMethodInfo);
+        private static readonly MethodInfo getCustomInput = SymbolExtensions.GetMethodInfo(() => GetCustomInput());
+        public bool failedPatch = false;
 
-        internal static readonly MethodInfo getCustomInput = SymbolExtensions.GetMethodInfo(() => GetCustomInput());
-        internal static bool failedPatch = false;
-        internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        [AffinityTranspiler]
+        [AffinityPatch(typeof(VRControllersInputManager), nameof(VRControllersInputManager.MenuButtonDown))]
+        private IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             failedPatch = false;
             List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
@@ -30,14 +28,15 @@ namespace ControllerTweaks.HarmonyPatches
                     break;
                 }
             }
-            if (index != -1 && PluginConfig.Instance.PauseRemapEnabled)
+
+            if (index != -1)
             {
                 codes.RemoveAt(index);
                 codes.RemoveAt(index);
                 CodeInstruction newInstruction = new CodeInstruction(OpCodes.Call, getCustomInput);
                 codes.Insert(index, newInstruction);
             }
-            else if (index == -1)
+            else
             {
                 failedPatch = true;
                 Plugin.Log.Error("Pause button remap patch failed. Opcodes:");
@@ -49,12 +48,12 @@ namespace ControllerTweaks.HarmonyPatches
             return codes.AsEnumerable();
         }
 
-        internal static bool GetCustomInput()
+        private static bool GetCustomInput()
         {
             bool pressed = false;
             foreach (var button in PluginConfig.Instance.PauseButtons)
             {
-                pressed = pressed || OVRInput.Get(button, OVRInput.Controller.Touch);
+                pressed = pressed || OVRInput.GetDown(button, OVRInput.Controller.Touch);
             }
             return pressed;
         }
