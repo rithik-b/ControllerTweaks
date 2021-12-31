@@ -1,5 +1,6 @@
 ﻿using ControllerTweaks.HarmonyPatches;
 using ControllerTweaks.Installers;
+using HarmonyLib;
 using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
@@ -30,10 +31,10 @@ namespace ControllerTweaks
             Instance = this;
             Plugin.Log = logger;
             Plugin.Log?.Debug("Logger initialized.");
-            zenjector.OnApp<ControllerTweaksApplicationInstaller>();
-            zenjector.OnMenu<ControllerTweaksMenuInstaller>();
-            zenjector.OnGame<ControllerTweaksGameInstaller>();
-            zenjector.OnGame<ControllerTweaksStandardInstaller>().OnlyForStandard();
+            zenjector.Install<ControllerTweaksApplicationInstaller>(Location.App);
+            zenjector.Install<ControllerTweaksMenuInstaller>(Location.Menu);
+            zenjector.Install<ControllerTweaksGameInstaller>(Location.Player);
+            zenjector.Install<ControllerTweaksStandardInstaller>(Location.StandardPlayer);
         }
 
         #region BSIPA Config
@@ -109,7 +110,7 @@ namespace ControllerTweaks
             try
             {
                 // Removes all patches with this HarmonyId
-                harmony.UnpatchAll(HarmonyId);
+                Harmony.UnpatchID(HarmonyId);
             }
             catch (Exception ex)
             {
