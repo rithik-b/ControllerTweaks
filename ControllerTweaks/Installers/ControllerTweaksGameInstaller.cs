@@ -4,7 +4,7 @@ using Zenject;
 
 namespace ControllerTweaks.Installers
 {
-    public class ControllerTweaksGameInstaller : Installer
+    internal class ControllerTweaksGameInstaller : Installer
     {
         public override void InstallBindings()
         {

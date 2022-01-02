@@ -3,7 +3,6 @@ using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
 using SiraUtil.Zenject;
-using UnityEngine.XR;
 using IPALogger = IPA.Logging.Logger;
 
 namespace ControllerTweaks
@@ -25,11 +24,7 @@ namespace ControllerTweaks
             Instance = this;
             Plugin.Log = logger;
 
-            if (XRSettings.loadedDeviceName.Contains("oculus"))
-            {
-                zenjector.Install<ControllerTweaksRemapInstaller>(Location.App);
-            }
-
+            zenjector.Install<ControllerTweaksRemapInstaller>(Location.Menu);
             zenjector.Install<ControllerTweaksMenuInstaller>(Location.Menu);
             zenjector.Install<ControllerTweaksGameInstaller>(Location.GameCore);
             zenjector.Install<ControllerTweaksStandardInstaller>(Location.StandardPlayer);

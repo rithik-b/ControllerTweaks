@@ -1,7 +1,6 @@
 ﻿using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
-using ControllerTweaks.AffinityPatches;
 using ControllerTweaks.Interfaces;
 using ControllerTweaks.Utilities;
 using HMUI;
@@ -18,9 +17,6 @@ namespace ControllerTweaks.UI
     {
         private readonly ButtonSelectionModalController buttonSelectionModalController;
         private readonly IVRPlatformHelper vrPlatformHelper;
-        private readonly MenuButtonPatch menuButtonPatch;
-        private readonly MenuButtonDownPatch menuButtonDownPatch;
-        private readonly TriggerValuePatch triggerValuePatch;
 
         private bool _remapEnabledToggle;
 
@@ -157,10 +153,6 @@ namespace ControllerTweaks.UI
                 if (vrPlatformHelper.vrPlatformSDK != VRPlatformSDK.Oculus)
                 {
                     return "<color=red>Remap only works for Oculus VR.\nFor SteamVR, use SteamVR's built in button remapper.</color>";
-                }
-                if (menuButtonPatch.failedPatch || menuButtonDownPatch.failedPatch || triggerValuePatch.failedPatch)
-                {
-                    return "<color=red>Remap patch failed.\nPlease check for updates for this mod or contact #pc-help in BSMG.</color>";
                 }
                 if (RemapEnabledToggle && buttonList?.data.Count == 0)
                 {
