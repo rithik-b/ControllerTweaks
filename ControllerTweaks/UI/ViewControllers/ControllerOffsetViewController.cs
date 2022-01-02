@@ -1,5 +1,4 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
-using ControllerTweaks.Components;
 using System;
 using System.ComponentModel;
 using UnityEngine;
@@ -26,30 +25,6 @@ namespace ControllerTweaks.UI
 
         [UIComponent("root")]
         protected readonly RectTransform rootTransform;
-
-        [UIComponent("position-x-slider")]
-        protected readonly SliderSetting positionXSlider;
-
-        [UIComponent("position-y-slider")]
-        protected readonly SliderSetting positionYSlider;
-
-        [UIComponent("position-z-slider")]
-        protected readonly SliderSetting positionZSlider;
-
-        [UIComponent("rotation-x-slider")]
-        protected readonly SliderSetting rotationXSlider;
-
-        [UIComponent("rotation-y-slider")]
-        protected readonly SliderSetting rotationYSlider;
-
-        [UIComponent("rotation-z-slider")]
-        protected readonly SliderSetting rotationZSlider;
-
-        [UIComponent("left-button")]
-        protected readonly RectTransform leftButton;
-
-        [UIComponent("right-button")]
-        protected readonly RectTransform rightButton;
 
         [UIComponent("show-presets-button")]
         protected readonly RectTransform showPresetsButton;
@@ -122,19 +97,6 @@ namespace ControllerTweaks.UI
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RotationX)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RotationY)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RotationZ)));
-        }
-
-        [UIAction("#post-parse")]
-        protected void PostParse()
-        {
-            SliderButton.Register(GameObject.Instantiate(leftButton), GameObject.Instantiate(rightButton), positionXSlider, kPositionStep);
-            SliderButton.Register(GameObject.Instantiate(leftButton), GameObject.Instantiate(rightButton), positionYSlider, kPositionStep);
-            SliderButton.Register(GameObject.Instantiate(leftButton), GameObject.Instantiate(rightButton), positionZSlider, kPositionStep);
-            SliderButton.Register(GameObject.Instantiate(leftButton), GameObject.Instantiate(rightButton), rotationXSlider, kRotationStep);
-            SliderButton.Register(GameObject.Instantiate(leftButton), GameObject.Instantiate(rightButton), rotationYSlider, kRotationStep);
-            SliderButton.Register(GameObject.Instantiate(leftButton), GameObject.Instantiate(rightButton), rotationZSlider, kRotationStep);
-            GameObject.Destroy(leftButton.gameObject);
-            GameObject.Destroy(rightButton.gameObject);
         }
 
         [UIAction("show-presets-modal")]

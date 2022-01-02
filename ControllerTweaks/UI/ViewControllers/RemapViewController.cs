@@ -1,9 +1,8 @@
 ﻿using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
-using ControllerTweaks.HarmonyPatches;
 using ControllerTweaks.Interfaces;
-using ControllerTweaks.Managers;
+using ControllerTweaks.Utilities;
 using HMUI;
 using System;
 using System.Collections.Generic;
@@ -16,8 +15,9 @@ namespace ControllerTweaks.UI
 {
     public abstract class RemapViewController : IInitializable, IDisposable, ISettingsSubviewController, INotifyPropertyChanged
     {
-        private ButtonSelectionModalController buttonSelectionModalController;
-        private IVRPlatformHelper vrPlatformHelper;
+        private readonly ButtonSelectionModalController buttonSelectionModalController;
+        private readonly IVRPlatformHelper vrPlatformHelper;
+
         private bool _remapEnabledToggle;
 
         protected int selectedButtonTableIndex = -1;
@@ -72,7 +72,7 @@ namespace ControllerTweaks.UI
                 Buttons.Clear();
                 foreach (var cell in buttonList.data)
                 {
-                    Buttons.Add(ControllerTweaksInputManager.NameToButton[cell.text]);
+                    Buttons.Add(ControllerTweaksInputHelper.NameToButton[cell.text]);
                 }
             }
         }
@@ -96,7 +96,7 @@ namespace ControllerTweaks.UI
             RemapEnabledToggle = ButtonRemapEnabled;
             foreach (var button in Buttons)
             {
-                buttonList.data.Add(new CustomListTableData.CustomCellInfo(ControllerTweaksInputManager.ButtonToName[button]));
+                buttonList.data.Add(new CustomListTableData.CustomCellInfo(ControllerTweaksInputHelper.ButtonToName[button]));
             }
             buttonList.tableView.ReloadData();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WarningText)));
@@ -153,10 +153,6 @@ namespace ControllerTweaks.UI
                 if (vrPlatformHelper.vrPlatformSDK != VRPlatformSDK.Oculus)
                 {
                     return "<color=red>Remap only works for Oculus VR.\nFor SteamVR, use SteamVR's built in button remapper.</color>";
-                }
-                if (VRControllersInputManager_MenuButtonDown.failedPatch || VRControllersInputManager_MenuButton.failedPatch || VRControllersInputManager_TriggerValue.failedPatch)
-                {
-                    return "<color=red>Remap patch failed.\nPlease check for updates for this mod or contact #pc-help in BSMG.</color>";
                 }
                 if (RemapEnabledToggle && buttonList?.data.Count == 0)
                 {

@@ -18,7 +18,7 @@ You can even create your own presets (the create button is **only available from
 ![Presets](https://i.imgur.com/TSWSMyR.png)
 
 ## Download
-Download the latest version of the mod (v1.0.0) [here](https://github.com/rithik-b/ControllerTweaks/releases/tag/1.0.0 "here").
+Download the latest version of the mod (v1.2.0) [here](https://github.com/rithik-b/ControllerTweaks/releases/tag/1.2.0 "here").
 To install, move the dll to your Plugins folder.
 
 **BeatSaberMarkupLanguage (BSML)** and **SiraUtil** are required for this mod, so please download the latest version from ModAssistant.

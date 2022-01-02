@@ -3,7 +3,7 @@ using Zenject;
 
 namespace ControllerTweaks.Installers
 {
-    public class ControllerTweaksMenuInstaller : Installer
+    internal class ControllerTweaksMenuInstaller : Installer
     {
         public override void InstallBindings()
         {

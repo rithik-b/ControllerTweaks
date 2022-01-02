@@ -3,12 +3,16 @@
     "id": "ControllerTweaks",
     "name": "ControllerTweaks",
     "author": "PixelBoom",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "Remap Oculus Controllers, Enable Controller Swap or change Controller Offsets from Practice!",
-    "gameVersion": "1.16.3",
+    "gameVersion": "1.19.0",
     "dependsOn": {
-        "BSIPA": "^4.2.0",
-        "BeatSaberMarkupLanguage": "^1.5.4",
-        "SiraUtil": "^2.5.6"
+        "BSIPA": "^4.2.1",
+        "BeatSaberMarkupLanguage": "^1.6.0",
+        "SiraUtil": "^3.0.0"
+    },
+    "links": {
+        "project-source": "https://github.com/rithik-b/ControllerTweaks",
+        "donate": "https://ko-fi.com/pixelboom"
     }
 }
