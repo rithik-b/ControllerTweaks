@@ -4,7 +4,7 @@
 		<checkbox-setting text='Enable Remap' value='remap-enabled' apply-on-change='true' />
 		<vertical horizontal-fit='PreferredSize' vertical-fit='PreferredSize' active='~remap-enabled'>
 			<page-button event-click='button-list#PageUp' direction='Up' />
-			<list id='button-list' pref-height='18' select-cell='select-button-list' list-style='List' />
+			<list id='button-list' pref-height='18' select-cell='select-button-list' list-style='List' stick-scrolling='true' />
 			<page-button event-click='button-list#PageDown' direction='Down' />
 			<horizontal spacing='0' horizontal-fit='PreferredSize'>
 				<button text='+' on-click='add-button-clicked' />
